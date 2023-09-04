@@ -1,24 +1,30 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
   Row,
   Col,
-  Image,
   ListGroup,
   Card,
   Button,
   Badge,
 } from "react-bootstrap";
-import installations from "../installations";
+
+import axios from "axios";
 
 const InstallationScreen = () => {
+    const [installation, setInstallation] = useState([]);
   // get the id from the url
-  const { id } = useParams();
-  // find the installation with the id
-  const installation = installations.find(
-    (installation) => installation._id === id
-  );
-  console.log(installation);
+  const { id: installationId } = useParams();
+
+    useEffect(() => {
+        const fetchInstallation = async () => {
+            const { data } = await axios.get(`/api/installations/${installationId}`);
+            setInstallation(data);
+        };
+        fetchInstallation();
+
+    },[installationId])
 
   return (
     <>
@@ -45,7 +51,7 @@ const InstallationScreen = () => {
                   <Badge>{installation.status}</Badge>
                 </Col>
                 <Col>Concessionaire : {installation.concessionaire}</Col>
-                <Col>Garantie : {installation.garantie.duree} ans</Col>
+                <Col>Garantie : {installation?.garantie?.duree} ans</Col>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
@@ -60,7 +66,7 @@ const InstallationScreen = () => {
                 </Row>
               </ListGroup.Item>
                 <ListGroup.Item>
-                    <Button className="btn-block">Créer une demande d'intervention</Button>
+                    <Button className="btn-block">Créer une demande</Button>
                 </ListGroup.Item>
             </ListGroup>
           </Card>
