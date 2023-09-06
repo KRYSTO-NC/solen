@@ -1,9 +1,25 @@
-import express from "express";
-const router = express.Router();
-import {getInstallations , getInstallationById} from "../controllers/installationController.js";
+import express from 'express'
 
+const router = express.Router()
+import {
+  getInstallationById,
+  getInstallations,
+  
+  createInstallation,
+  deleteInstallation,
+  updateInstallation,
+ 
+} from '../controllers/installationController.js'
+import { protect, admin } from '../middleware/authMiddleware.js'
+import checkObjectId from '../middleware/checkObjectId.js'
 
-router.route("/").get(getInstallations);
-router.route("/:id").get(getInstallationById);
+router.route('/').get(getInstallations).post(protect, createInstallation)
 
-export default router;
+router
+
+  .route('/:id')
+  .get(checkObjectId, getInstallationById)
+  .put(protect, checkObjectId, updateInstallation)
+  .delete(protect, admin, checkObjectId, deleteInstallation)
+
+export default router

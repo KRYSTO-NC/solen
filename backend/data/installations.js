@@ -1,8 +1,9 @@
 const installations = [
   {
 
-    refference: "2023-01",
-    typeInstallation: "64f134693acae5fd674d1f87",
+
+    typeInstallation: "mono",
+    createdBy: "mono",
     status: "Etude",
     beneficiaire: "e744feb7-4650-496e-8694-0c36758917f0",
     demandeur: "3806d358-9430-4caf-86a6-65ae11c71ac4",
@@ -13,6 +14,7 @@ const installations = [
     garantie: {
       duree: "2",
       startDate: "2023-02-17",
+      isActive: true,
     },
     demandeEEC: {
       date: "2023-02-17",
@@ -50,8 +52,8 @@ const installations = [
   },
   {
 
-    refference: "2023-02",
-    typeInstallation: "64f134693acae5fd674d1f88",
+ 
+    typeInstallation: "tri",
     status: "Etude",
     beneficiaire: "ae268c61-f73a-48ad-abd5-c4243fe6c6cf",
     demandeur: "61aaf053-00bd-421a-b8d3-26110a9491f4",
@@ -97,9 +99,9 @@ const installations = [
   },
   {
 
-    refference: "2023-03",
-    typeInstallation: "64f134693acae5fd674d1f89",
-    status: "Termine",
+ 
+    typeInstallation: "mono",
+    status: "En Service",
     beneficiaire: "4b32fa45-4c6b-41bc-bc26-bc9e6c378351",
     demandeur: "b99b93b5-48d4-4a4b-bb7a-2098e046d07d",
     concessionaire: "EEC",

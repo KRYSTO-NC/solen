@@ -4,7 +4,7 @@ const installationSchema = mongoose.Schema(
   {
      createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+     
       ref: "User",
     },
 
@@ -25,15 +25,16 @@ const installationSchema = mongoose.Schema(
 
     // Informations générales
     typeInstallation: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "TypeInstallation",
+      type: String,
+      enum: ["mono", "tri"],
     },
     refference: {
       type: String,
     },
     status: {
       type: String,
-      enum: ["Etude", "En Service", "Projet", "Sans Suite", "Termine"],
+      enum: [ "Template", "Etude", "En Service", "Projet", "Sans Suite"],
+      default: "Template",
     },
     demandeur: {
       IdDolibarr: {
@@ -51,14 +52,15 @@ const installationSchema = mongoose.Schema(
 
     concessionaire: {
       type: String,
-      enum: ["EEC", "Enercal"],
+      enum: ["EEC", "Enercal","non renseigné"],
+      default: "non renseigné",
     },
     numCompteurEnercal: {
       type: Date,
     },
     address: {
       type: String,
-      required: true,
+    default: "Aucune adresse renseignée"
     },
 
     numClientEnercal: {
@@ -75,8 +77,9 @@ const installationSchema = mongoose.Schema(
     },
     // Gestion de la garantie
     garantie: {
-      actif: {
+      isActive: {
         type: Boolean,
+        default: false,
       },
       duree: {
         type: Number,
@@ -202,7 +205,7 @@ const installationSchema = mongoose.Schema(
   }
 );
 
-installationSchema.pre("save", function (next) {
+installationSchema.pre("save", async function (next) {
   if (this.dateMiseEnService) {
     // Convertir la durée en millisecondes (1 année = 365.25 jours pour tenir compte des années bissextiles)
     const dureeEnMs = this.garantie.duree * 365.25 * 24 * 60 * 60 * 1000;
@@ -211,6 +214,18 @@ installationSchema.pre("save", function (next) {
     this.garantie.dateFin = new Date(
       this.dateMiseEnService.getTime() + dureeEnMs
     );
+  }
+  if (!this.refference) { // Génère la référence seulement si elle n'existe pas déjà
+    // Obtenez l'année en cours
+    const currentYear = new Date().getFullYear();
+
+    // Comptez le nombre d'installations créées cette année
+    const count = await Installation.countDocuments({
+      refference: new RegExp(`^${currentYear}-`, 'i')
+    });
+
+    // Générez le champ refference
+    this.refference = `${currentYear}-${count + 1}`;
   }
   next();
 });
