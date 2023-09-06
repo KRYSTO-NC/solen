@@ -11,6 +11,7 @@ import {
 } from "../slices/installationsApiSlice";
 import { toast } from "react-toastify";
 import Paginate from "../components/Paginate";
+import { useState } from "react";
 
 const InstallationListScreen = () => {
   const { pageNumber } = useParams();
@@ -18,6 +19,7 @@ const InstallationListScreen = () => {
     pageNumber,
   });
 
+  const [selectedStatus, setSelectedStatus] = useState("");
   const [createInstallation, { isLoading: loadingCreate }] =
     useCreateInstallationMutation();
 
@@ -51,8 +53,18 @@ const InstallationListScreen = () => {
   return (
     <>
       <Row className="align-items-center">
-        <Col >
+        <Col>
           <h2>Installations</h2>
+        </Col>
+        <Col className="text-end">
+          <select className="select-filter" onChange={(e) => setSelectedStatus(e.target.value)}>
+            <option value="">Tous les statuts</option>
+            <option value="Template">Template</option>
+            <option value="Projet">Projet</option>
+            <option value="Etude">Etude</option>
+            <option value="En Service">En Service</option>
+            <option value="Sans Suite">Sans suite</option>
+          </select>
         </Col>
         <Col className="text-end">
           <Button className="my-3 btn-sm" onClick={createInstallationHandler}>
@@ -79,40 +91,41 @@ const InstallationListScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {data.installations?.map((installation) => (
-                <tr key={installation._id}>
-                  <td>{installation.refference}</td>
-                  <td>{installation.status}</td>
-                  <td>{installation.concessionaire}</td>
-                  <td>{installation.address}</td>
-                  <td>
-                  <LinkContainer
-                      to={`/installation/${installation._id}`}
-                    >
-                    <Button variant="success" className="btn-sm mx-2">
-                        <FaEye />
+              {data.installations
+                ?.filter(
+                  (installation) =>
+                    !selectedStatus || installation.status === selectedStatus
+                )
+                .map((installation) => (
+                  <tr key={installation._id}>
+                    <td>{installation.refference}</td>
+                    <td>{installation.status}</td>
+                    <td>{installation.concessionaire}</td>
+                    <td>{installation.address}</td>
+                    <td>
+                      <LinkContainer to={`/installation/${installation._id}`}>
+                        <Button variant="success" className="btn-sm mx-2">
+                          <FaEye />
+                        </Button>
+                      </LinkContainer>
+                      <LinkContainer
+                        to={`/installation/${installation._id}/edit`}
+                      >
+                        <Button variant="warning" className="btn-sm mx-2">
+                          <FaEdit />
+                        </Button>
+                      </LinkContainer>
+
+                      <Button
+                        variant="danger"
+                        className="btn-sm mx-2"
+                        onClick={() => deleteHandler(installation._id)}
+                      >
+                        <FaTrash style={{ color: "white" }} />
                       </Button>
-                     
-                    </LinkContainer>
-                    <LinkContainer
-                      to={`/installation/${installation._id}/edit`}
-                    >
-                      <Button variant="warning" className="btn-sm mx-2">
-                        <FaEdit />
-                      </Button>
-                     
-                    </LinkContainer>
-                  
-                    <Button
-                      variant="danger"
-                      className="btn-sm mx-2"
-                      onClick={() => deleteHandler(installation._id)}
-                    >
-                      <FaTrash style={{ color: "white" }} />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
           <Paginate pages={data.pages} page={data.page} isAdmin={true} />
