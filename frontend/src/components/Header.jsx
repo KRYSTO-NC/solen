@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Navbar, Nav, Container,  NavDropdown } from "react-bootstrap";
-import { FaSolarPanel, FaUser, FaUserAltSlash, FaUserTimes, FaWrench } from "react-icons/fa";
+import { FaPhone, FaSolarPanel, FaUser, FaUserAltSlash, FaUserTimes, FaWrench } from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../slices/userApiSlice";
@@ -50,6 +50,12 @@ const Header = () => {
                  <Nav.Link>
                    {" "}
                    <FaWrench/> Interventions
+                 </Nav.Link>
+               </LinkContainer>
+                 <LinkContainer to={"/contacts"}>
+                 <Nav.Link>
+                   {" "}
+                   <FaPhone/> contacts
                  </Nav.Link>
                </LinkContainer>
                 <NavDropdown title={userInfo?.name} id="username">

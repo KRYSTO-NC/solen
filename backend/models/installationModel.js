@@ -2,10 +2,13 @@ import mongoose from "mongoose";
 
 const installationSchema = mongoose.Schema(
   {
-     createdBy: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-     
       ref: "User",
+    },
+
+    refference: {
+      type: String,
     },
 
     activeMaintenanceContract: {
@@ -25,71 +28,78 @@ const installationSchema = mongoose.Schema(
 
     // Informations générales
     typeInstallation: {
-      type: String,
-      enum: ["mono", "tri"],
+      raccordement: {
+        type: String,
+        enum: ["mono", "tri" , "non defini"],
+        default: "non defini",
+      },
+      puissance: {
+        type: Number,
+        default: 0,
+      },
+      amperage: {
+        type: Number,
+        default: 0,
+      },
     },
-    refference: {
-      type: String,
-    },
+
+   
     status: {
       type: String,
-      enum: [ "Template", "Etude", "En Service", "Projet", "Sans Suite"],
+      enum: ["Template", "Etude", "En Service", "Projet", "Sans Suite"],
       default: "Template",
     },
     demandeur: {
-      IdDolibarr: {
         type: String,
-      },
-      remarque: String,
+        default: "non renseigné",
     },
 
     benneficiaire: {
-      IdDolibarr: {
         type: String,
-      },
-      remarque: String,
+        default: "non renseigné",
     },
 
     concessionaire: {
       type: String,
-      enum: ["EEC", "Enercal","non renseigné"],
+      enum: ["EEC", "Enercal", "non renseigné"],
       default: "non renseigné",
     },
     numCompteurEnercal: {
-      type: Date,
+      type:String,
+      default: "non renseigné",
     },
     address: {
       type: String,
-    default: "Aucune adresse renseignée"
+      default: "Aucune adresse renseignée",
     },
 
     numClientEnercal: {
-      type: Date,
+      type: String,
+      default: "non renseigné",
     },
-    datePose: {
-      type: Date,
+    numCompteurEnercal: {
+      type: String,
+      default: "non renseigné",
     },
-    datePrevisionelMiseEnService: {
-      type: Date,
-    },
-    dateMiseEnService: {
-      type: Date,
-    },
-    // Gestion de la garantie
-    garantie: {
-      isActive: {
-        type: Boolean,
-        default: false,
+
+
+       // Gestion de la garantie
+       garantie: {
+        isActive: {
+          type: Boolean,
+          default: false,
+        },
+        duree: {
+          type: Number,
+          default: 1, // Durée par défaut de 1 an
+        },
+        dateFin: {
+          type: Date,
+        },
       },
-      duree: {
-        type: Number,
-        default: 1, // Durée par défaut de 1 an
-      },
-      dateFin: {
-        type: Date,
-      },
-    },
-    // Informations sur la demande EEC
+
+
+          // Informations sur la demande EEC
     demandeEEC: {
       date: {
         type: Date,
@@ -99,9 +109,12 @@ const installationSchema = mongoose.Schema(
       },
       status: {
         type: String,
-        enum: ["enDemande", "Acceptée", "Refusé", "sous-reserve"],
+        enum: ["enDemande", "Accepté", "Refusé", "sous-reserve"],
       },
-      remarque: String,
+      remarque: {
+        type: String,
+        default: "non renseigné",
+      }
     },
     // Informations sur la demande Enercal
     demandeEnercal: {
@@ -113,9 +126,12 @@ const installationSchema = mongoose.Schema(
       },
       status: {
         type: String,
-        enum: ["enDemande", "Acceptée", "Refusé", "sous-reserve"],
+        enum: ["enDemande", "Accepté", "Refusé", "sous-reserve"],
       },
-      remarque: String,
+      remarque: {
+        type: String,
+        default: "non renseigné",
+      }
     },
     // Informations sur la demande Dimenc
     demandeDimenc: {
@@ -130,39 +146,65 @@ const installationSchema = mongoose.Schema(
       },
       status: {
         type: String,
-        enum: ["enDemande", "Acceptée", "Refusé", "sous-reserve"],
+        enum: ["enDemande", "Accepté", "Refusé", "sous-reserve"],
       },
-      remarque: String,
+      remarque: {
+        type: String,
+        default: "non renseigné",
+      }
     },
     // Informations sur la conformité
     conformite: {
       date: {
         type: Date,
       },
-      remarque: String,
+      remarque: {
+        type: String,
+        default: "non renseigné",
+      }
     },
+
+    datePose: {
+      type: Date,
+    },
+    datePrevisionelMiseEnService: {
+      type: Date,
+    },
+    dateMiseEnService: {
+      type: Date,
+    },
+ 
+
 
     // Informations techniques
     puissanceSouscrite: {
       type: Number,
+      default: 0,
+
     },
     puissanceTotalOnduleur: {
       type: Number,
+      default: 0,
     },
     puissancePvEtHybrid: {
       type: Number,
+      default: 0,
     },
     valeurBridagePuissance: {
       type: Number,
+      default: 0,
     },
     valeurBridageReinjection: {
       type: Number,
+      default: 0,
     },
     stockage: {
       type: Boolean,
+      default: false,
     },
     capaciteBatterie: {
       type: Number,
+      default: 0,
     },
     onduleurs: [
       {
@@ -171,6 +213,7 @@ const installationSchema = mongoose.Schema(
         },
         nombre: {
           type: Number,
+          
         },
       },
     ],
@@ -205,29 +248,89 @@ const installationSchema = mongoose.Schema(
   }
 );
 
-installationSchema.pre("save", async function (next) {
-  if (this.dateMiseEnService) {
-    // Convertir la durée en millisecondes (1 année = 365.25 jours pour tenir compte des années bissextiles)
-    const dureeEnMs = this.garantie.duree * 365.25 * 24 * 60 * 60 * 1000;
 
-    // Calculer la date de fin de la garantie
+
+// Reverse populate avec des virtuals
+installationSchema.virtual("interventions", {
+  ref: "Intervention",
+  localField: "_id",
+  foreignField: "installationId",
+  justOne: false,
+});
+// Reverse populate avec des virtuals
+installationSchema.virtual("maintenanceContracts", {
+  ref: "MaintenanceContract",
+  localField: "_id",
+  foreignField: "installationId",
+  justOne: false,
+});
+
+
+installationSchema.pre("save", async function (next) {
+
+  console.log("Pre-save hook triggered");
+   // Calcul de la date de fin de garantie
+   if (this.dateMiseEnService && this.garantie.duree) {
+    const dureeEnMs = this.garantie.duree * 365.25 * 24 * 60 * 60 * 1000;
     this.garantie.dateFin = new Date(
       this.dateMiseEnService.getTime() + dureeEnMs
     );
+    this.garantie.isActive = true; // La garantie est active
+  } else {
+    this.garantie.isActive = false; // La garantie n'est pas active car la date de mise en service n'est pas définie
   }
-  if (!this.refference) { // Génère la référence seulement si elle n'existe pas déjà
+
+  if (!this.refference) {
+    // Génère la référence seulement si elle n'existe pas déjà
     // Obtenez l'année en cours
     const currentYear = new Date().getFullYear();
 
     // Comptez le nombre d'installations créées cette année
     const count = await Installation.countDocuments({
-      refference: new RegExp(`^${currentYear}-`, 'i')
+      refference: new RegExp(`^${currentYear}-`, "i"),
     });
 
     // Générez le champ refference
     this.refference = `${currentYear}-${count + 1}`;
   }
+  if (this.demandeDimenc.dateAcusee) {
+    // Convertir la durée en millisecondes (30 jours)
+    const dureeEnMs = 30 * 24 * 60 * 60 * 1000;
+
+    // Calculer la date de fin du délai de rétractation
+    this.demandeDimenc.finDelaiRetraction = new Date(
+      this.demandeDimenc.dateAcusee.getTime() + dureeEnMs
+    );
+  } else {
+    // Mettre le champ à null si dateAcusee n'est pas défini
+    this.demandeDimenc.finDelaiRetraction = null;
+  }
+
   next();
+});
+
+installationSchema.post("find", function (docs) {
+  for (let doc of docs) {
+    if (doc.garantie.dateFin) {
+      if (new Date() > new Date(doc.garantie.dateFin)) {
+        doc.garantie.isActive = false;
+      }
+    } else {
+      doc.garantie.isActive = false;
+    }
+  }
+});
+
+installationSchema.post("findOne", function (doc) {
+  if (doc) {
+    if (doc.garantie.dateFin) {
+      if (new Date() > new Date(doc.garantie.dateFin)) {
+        doc.garantie.isActive = false;
+      }
+    } else {
+      doc.garantie.isActive = false;
+    }
+  }
 });
 
 const Installation = mongoose.model("Installation", installationSchema);

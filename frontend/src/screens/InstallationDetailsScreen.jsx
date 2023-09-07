@@ -62,6 +62,7 @@ const InstallationDetailsScreen = () => {
                   style={{ color: "red", marginLeft: "10px", fontSize: "30px" }}
             />
           )}
+          <p>Date de fin  {new Date(installation.garantie?.dateFin).toLocaleDateString()}</p>
         </Col>
       </Row>
       <Row className="my-4">

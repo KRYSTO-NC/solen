@@ -1,6 +1,6 @@
 // export const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : '';
 export const BASE_URL = ``;
-export const DOLI_URL = `https://solisdev-erp.square.nc/api/index.php`;
+export const DOLIBAR_URL = `https://solisdev-erp.square.nc/api/index.php`;
 
 
 export const INSTALLATIONS_URL = `/api/installations`

@@ -1,13 +1,6 @@
 import mongoose from "mongoose";
 
-const optionSchema = mongoose.Schema({
-  name: String,
-  recurrence: {
-    type: String,
-    enum: ['Quotidien', 'Hebdomadaire', 'Mensuel', 'Annuel'],
-    default: 'Mensuel'
-  }
-});
+
 
 const maintenanceContractSchema = mongoose.Schema({
   installationId: {
@@ -15,7 +8,21 @@ const maintenanceContractSchema = mongoose.Schema({
     ref: "Installation", // Le modèle d'installation correspondant
     required: true
   },
-  options: [optionSchema],
+  
+  options: [
+    {
+      optionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Option", // Le modèle d'option correspondant
+        required: true
+      },
+      recurrence: {
+        type: String, // ou Number, selon vos besoins
+        required: true
+      }
+    }
+
+  ],
   startDate: Date,
   endDate: Date
 },

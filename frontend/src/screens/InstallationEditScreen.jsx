@@ -191,7 +191,7 @@ const InstallationEditScreen = () => {
                 <Form.Group controlId="typeInstallations" className="my-2">
                   <Form.Label>Type d'installations</Form.Label>
                   <Form.Select
-                    value={typeInstallation}
+                    value={typeInstallation.raccordement}
                     onChange={(e) => setTypeInstallation(e.target.value)}
                   >
                     <option value="" disabled>

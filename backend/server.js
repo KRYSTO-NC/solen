@@ -6,6 +6,9 @@ import connectDB from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import userRoutes from './routes/userRoutes.js'
 import installationRoutes from "./routes/installationRoutes.js";
+import interventionRoutes from "./routes/interventionRoutes.js";
+import contractRoutes from "./routes/contractRoutes.js";
+import optionRoutes from "./routes/optionRoutes.js";
 
 const port = process.env.PORT || 5000;
 const app = express();
@@ -26,6 +29,9 @@ app.get("/", (req, res) => {
 
 app.use('/api/users', userRoutes)
 app.use("/api/installations", installationRoutes);
+app.use("/api/interventions", interventionRoutes);
+app.use("/api/contracts", contractRoutes);
+app.use("/api/options", optionRoutes);
 app.use(notFound);
 app.use(errorHandler);
 

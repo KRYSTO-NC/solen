@@ -14,8 +14,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import PrivateRoute from './components/PrivateRoute'
 import LoginScreen from "./screens/LoginScreen";
-import InstallationsScreen from "./screens/InstallationsScreen";
-import InstallationScreen from "./screens/InstallationScreen";
+
 import UserListScreen from "./screens/admin/UserListScreen";
 import AdminRoute from "./components/AdminRoute";
 import EditUserScreen from "./screens/admin/EditUserScreen";
@@ -24,14 +23,22 @@ import InstallationListScreen from "./screens/InstallationListScreen";
 import InstallationEditScreen from "./screens/InstallationEditScreen";
 import InstallationDetailsScreen from "./screens/InstallationDetailsScreen";
 
+import ContactsScreen from "./screens/ContactsScreen";
+import ContactDetailsScreen from "./screens/ContactDetailsScreen";
+import InterventionsScreen from "./screens/InterventionsScreen";
+
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<LoginScreen />} />
       <Route path="" element={<PrivateRoute />}>
     
-      {/* <Route path="/installations" element={<InstallationsScreen />} /> */}
+
+      <Route path="/contacts" element={<ContactsScreen/>} />
+      <Route path="/contact/:id" element={<ContactDetailsScreen/>}></Route>
       <Route path="/installations" element={<InstallationListScreen />} />
+      <Route path="/interventions" element={<InterventionsScreen />} />
+      
 
       <Route
           path="/installations/:pageNumber"

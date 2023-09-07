@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
 const interventionSchema = mongoose.Schema({
+
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+
   installationId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Installation", // Le modèle d'installation correspondant
@@ -12,16 +18,17 @@ const interventionSchema = mongoose.Schema({
     required: false // Ce champ est facultatif car une intervention peut être faite sans contrat de maintenance
   },
 
-  
   dateDemande: Date,
   dateRealisation: Date,
   datePrevisionnelle: Date,
   status: {
     type: String,
     enum: ["Demande", "Fait", "Retard"],
+    default: "Demande"
   },
   remarque: {
-    type: String
+    type: String,
+    default: "Aucune remmarque"
   },
 
   nbJoursDeRetard: Number,
