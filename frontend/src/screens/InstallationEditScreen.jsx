@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Dropdown } from "react-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
@@ -9,10 +9,18 @@ import {
   useUpdateInstallationMutation,
   useGetInstallationDetailsQuery,
 } from "../slices/installationsApiSlice";
+import { useGetThirdPartiesQuery } from "../slices/dolibarr/dolliThirdPartyApiSlice";
 
 const InstallationEditScreen = () => {
   const { id: installationId } = useParams();
 
+  const {
+    data: tiers,
+    isLoading: tiersLoading,
+    error: errorTiers,
+  } = useGetThirdPartiesQuery();
+
+  console.log(tiers);
   // Informations générales
   const [typeInstallation, setTypeInstallation] = useState("");
   const [status, setStatus] = useState("");
@@ -107,7 +115,6 @@ const InstallationEditScreen = () => {
     e.preventDefault();
     try {
       await updateInstallation({
-
         installationId,
         concessionaire,
         status,
@@ -163,7 +170,6 @@ const InstallationEditScreen = () => {
                     <option value="" disabled>
                       Choisir un statut
                     </option>
-                    <option value="Template">Template</option>
                     <option value="Etude">Etude</option>
                     <option value="En Service">En service</option>
                     <option value="Projet">Projet</option>
@@ -171,7 +177,7 @@ const InstallationEditScreen = () => {
                   </Form.Select>
                 </Form.Group>
               </Col>
-              
+
               <Col md={4}>
                 <Form.Group controlId="concessionaire" className="my-2">
                   <Form.Label>Concessionaire</Form.Label>
@@ -204,18 +210,62 @@ const InstallationEditScreen = () => {
               </Col>
             </Row>
             <Row>
-                <h5>addresse de l'installations</h5>
-                <Col md={6}>
+              <h5>addresse de l'installations</h5>
+              <Col md={6}>
                 <Form.Group controlId="address" className="my-2">
-                    <Form.Label>Adresse</Form.Label>
-                    <Form.Control
+                  <Form.Label>Adresse</Form.Label>
+                  <Form.Control
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    ></Form.Control>
-                    
+                  ></Form.Control>
                 </Form.Group>
-                </Col>
+              </Col>
             </Row>
+
+            <Row>
+              <Col md={6}>
+                <Form.Group controlId="demandeur" className="my-2">
+                  <Form.Label>Demandeur</Form.Label>
+                  <Form.Select>
+                    <option value="" disabled>
+                      selectionner
+                    </option>
+
+                    {tiersLoading ? (
+                      <option disabled>Chargement...</option>
+                    ) : errorTiers ? (
+                      <option disabled>Erreur</option>
+                    ) : (
+                      tiers.map((tier) => {
+                        return <option key={tier.id}>{tier.name}</option>;
+                      })
+                    )}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+
+              <Col md={6}>
+                <Form.Group controlId="demandeur" className="my-2">
+                  <Form.Label>Benneficiaire</Form.Label>
+                  <Form.Select>
+                    <option value="" disabled>
+                      selectionner
+                    </option>
+
+                    {tiersLoading ? (
+                      <option disabled>Chargement...</option>
+                    ) : errorTiers ? (
+                      <option disabled>Erreur</option>
+                    ) : (
+                      tiers.map((tier) => {
+                        return <option key={tier.id}>{tier.name}</option>;
+                      })
+                    )}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
+
             <Row>
               <h5>Garantie</h5>
               <Col md={4}>
@@ -291,20 +341,21 @@ const InstallationEditScreen = () => {
               </Col>
               <Col md={4}>
                 <Form.Group controlId="demandeEECStatus" className="my-2">
-                    <Form.Label>Statut</Form.Label>
-                    <Form.Select>
-                        <option value="" disabled>Choisir un statut</option>
-                        <option value="En cours">En cours</option>
-                        <option value="Accepté">Accepté</option>    
-                        <option value="Refusé">Refusé</option>
-                    </Form.Select>
+                  <Form.Label>Statut</Form.Label>
+                  <Form.Select>
+                    <option value="" disabled>
+                      Choisir un statut
+                    </option>
+                    <option value="En cours">En cours</option>
+                    <option value="Accepté">Accepté</option>
+                    <option value="Refusé">Refusé</option>
+                  </Form.Select>
                 </Form.Group>
               </Col>
             </Row>
             <Row>
-                <h5>Demande Enercal</h5>
-                <Col md={4}>
-
+              <h5>Demande Enercal</h5>
+              <Col md={4}>
                 <Form.Group controlId="demandeEnercalDate" className="my-2">
                   <Form.Label>Date de la demande</Form.Label>
                   <Form.Control
@@ -318,8 +369,8 @@ const InstallationEditScreen = () => {
                     }
                   ></Form.Control>
                 </Form.Group>
-                </Col>
-                <Col md={4}>
+              </Col>
+              <Col md={4}>
                 <Form.Group controlId="demandeEECDateReponse" className="my-2">
                   <Form.Label>Date de la réponse</Form.Label>
                   <Form.Control
@@ -333,19 +384,20 @@ const InstallationEditScreen = () => {
                     }
                   ></Form.Control>
                 </Form.Group>
-                </Col>
-                <Col md={4}>
+              </Col>
+              <Col md={4}>
                 <Form.Group controlId="demandeEnercalStatus" className="my-2">
-                    <Form.Label>Statut</Form.Label>
-                    <Form.Select>
-                        <option value="" disabled>Choisir un statut</option>
-                        <option value="En cours">En cours</option>
-                        <option value="Accepté">Accepté</option>    
-                        <option value="Refusé">Refusé</option>
-                    </Form.Select>
+                  <Form.Label>Statut</Form.Label>
+                  <Form.Select>
+                    <option value="" disabled>
+                      Choisir un statut
+                    </option>
+                    <option value="En cours">En cours</option>
+                    <option value="Accepté">Accepté</option>
+                    <option value="Refusé">Refusé</option>
+                  </Form.Select>
                 </Form.Group>
               </Col>
-
             </Row>
 
             <Button type="submit" variant="primary" className="my-2">

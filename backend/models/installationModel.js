@@ -11,6 +11,17 @@ const installationSchema = mongoose.Schema(
       type: String,
     },
 
+    // si True type abonement
+    raccrodReseau: {
+      type: Boolean,
+    },
+
+    typeAbonement: {
+      type: String,
+      enum: ["Basse tension", "Haute tension", "non defini"],
+   
+    },
+
     activeMaintenanceContract: {
       isActive: {
         type: Boolean,
@@ -30,7 +41,7 @@ const installationSchema = mongoose.Schema(
     typeInstallation: {
       raccordement: {
         type: String,
-        enum: ["mono", "tri" , "non defini"],
+        enum: ["mono", "tri", "non defini"],
         default: "non defini",
       },
       puissance: {
@@ -43,20 +54,19 @@ const installationSchema = mongoose.Schema(
       },
     },
 
-   
     status: {
       type: String,
       enum: ["Template", "Etude", "En Service", "Projet", "Sans Suite"],
       default: "Template",
     },
     demandeur: {
-        type: String,
-        default: "non renseigné",
+      type: String,
+      default: "non renseigné",
     },
 
     benneficiaire: {
-        type: String,
-        default: "non renseigné",
+      type: String,
+      default: "non renseigné",
     },
 
     concessionaire: {
@@ -65,7 +75,7 @@ const installationSchema = mongoose.Schema(
       default: "non renseigné",
     },
     numCompteurEnercal: {
-      type:String,
+      type: String,
       default: "non renseigné",
     },
     address: {
@@ -77,29 +87,23 @@ const installationSchema = mongoose.Schema(
       type: String,
       default: "non renseigné",
     },
-    numCompteurEnercal: {
-      type: String,
-      default: "non renseigné",
+
+    // Gestion de la garantie
+    garantie: {
+      isActive: {
+        type: Boolean,
+        default: false,
+      },
+      duree: {
+        type: Number,
+        default: 1, // Durée par défaut de 1 an
+      },
+      dateFin: {
+        type: Date,
+      },
     },
 
-
-       // Gestion de la garantie
-       garantie: {
-        isActive: {
-          type: Boolean,
-          default: false,
-        },
-        duree: {
-          type: Number,
-          default: 1, // Durée par défaut de 1 an
-        },
-        dateFin: {
-          type: Date,
-        },
-      },
-
-
-          // Informations sur la demande EEC
+    // Informations sur la demande EEC
     demandeEEC: {
       date: {
         type: Date,
@@ -114,7 +118,7 @@ const installationSchema = mongoose.Schema(
       remarque: {
         type: String,
         default: "non renseigné",
-      }
+      },
     },
     // Informations sur la demande Enercal
     demandeEnercal: {
@@ -131,7 +135,7 @@ const installationSchema = mongoose.Schema(
       remarque: {
         type: String,
         default: "non renseigné",
-      }
+      },
     },
     // Informations sur la demande Dimenc
     demandeDimenc: {
@@ -151,19 +155,25 @@ const installationSchema = mongoose.Schema(
       remarque: {
         type: String,
         default: "non renseigné",
-      }
+      },
     },
     // Informations sur la conformité
     conformite: {
       date: {
         type: Date,
       },
+      idTiers: {
+        type: String,
+      },
       remarque: {
         type: String,
         default: "non renseigné",
-      }
+      },
     },
 
+    datePrevisionelPose: {
+      type: Date,
+    },
     datePose: {
       type: Date,
     },
@@ -173,60 +183,48 @@ const installationSchema = mongoose.Schema(
     dateMiseEnService: {
       type: Date,
     },
- 
-
 
     // Informations techniques
     puissanceSouscrite: {
       type: Number,
       default: 0,
-
     },
+
     puissanceTotalOnduleur: {
       type: Number,
       default: 0,
     },
-    puissancePvEtHybrid: {
+
+    // puissancePvEtHybrid: {
+    //   type: Number,
+    //   default: 0,
+    // },
+
+    puissancePv: {
       type: Number,
       default: 0,
     },
-    valeurBridagePuissance: {
-      type: Number,
-      default: 0,
-    },
+
     valeurBridageReinjection: {
       type: Number,
       default: 0,
     },
+
+  // si stockage true 
     stockage: {
       type: Boolean,
       default: false,
     },
+    
+    typeBaterrie: {
+      type: String,
+      enum: ["Lithium Ion", "Plomb", "Autre"],
+     },
+
     capaciteBatterie: {
       type: Number,
       default: 0,
     },
-    onduleurs: [
-      {
-        ref: {
-          type: String,
-        },
-        nombre: {
-          type: Number,
-          
-        },
-      },
-    ],
-    systemeDeSupportage: [
-      {
-        ref: {
-          type: String,
-        },
-        nombre: {
-          type: Number,
-        },
-      },
-    ],
     batteries: [
       {
         ref: {
@@ -240,6 +238,56 @@ const installationSchema = mongoose.Schema(
         },
       },
     ],
+
+    onduleurs: [
+      {
+        ref: {
+          type: String,
+        },
+        nombre: {
+          type: Number,
+        },
+      },
+    ],
+    systemeDeSupportage: [
+      {
+        ref: {
+          type: String,
+        },
+        nombre: {
+          type: Number,
+        },
+      },
+    ],
+
+    panneaux: [
+      {
+        ref: {
+          type: String,
+        },
+        nombre: {
+          type: Number,
+        },
+        suppervision: {
+          type: Number,
+        },
+      },
+    ],
+    administratif: [
+      {
+        ref: {
+          type: String,
+        },
+        nombre: {
+          type: Number,
+        },
+        suppervision: {
+          type: Number,
+        },
+      },
+    ],
+
+
   },
   {
     timestamps: true,
@@ -247,8 +295,6 @@ const installationSchema = mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
-
-
 
 // Reverse populate avec des virtuals
 installationSchema.virtual("interventions", {
@@ -265,12 +311,10 @@ installationSchema.virtual("maintenanceContracts", {
   justOne: false,
 });
 
-
 installationSchema.pre("save", async function (next) {
-
   console.log("Pre-save hook triggered");
-   // Calcul de la date de fin de garantie
-   if (this.dateMiseEnService && this.garantie.duree) {
+  // Calcul de la date de fin de garantie
+  if (this.dateMiseEnService && this.garantie.duree) {
     const dureeEnMs = this.garantie.duree * 365.25 * 24 * 60 * 60 * 1000;
     this.garantie.dateFin = new Date(
       this.dateMiseEnService.getTime() + dureeEnMs

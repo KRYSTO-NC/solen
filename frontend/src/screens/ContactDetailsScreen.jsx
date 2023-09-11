@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetContactDetailsQuery } from "../slices/dolibarr/dolliApiSlice";
+import { useGetContactDetailsQuery } from "../slices/dolibarr/dolliContactApiSlice";
 import { Badge } from "react-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";

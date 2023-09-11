@@ -26,6 +26,10 @@ import InstallationDetailsScreen from "./screens/InstallationDetailsScreen";
 import ContactsScreen from "./screens/ContactsScreen";
 import ContactDetailsScreen from "./screens/ContactDetailsScreen";
 import InterventionsScreen from "./screens/InterventionsScreen";
+import SolenProductScreen from "./screens/SolenProductScreen";
+import SolenServicesScreen from "./screens/SolenServicesScreen";
+import SimulationGuide from "./screens/admin/SimulationGuide/SimulationGuide";
+import SimulationsListScreen from "./screens/SimulationsListScreen";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -38,6 +42,10 @@ const routes = createBrowserRouter(
       <Route path="/contact/:id" element={<ContactDetailsScreen/>}></Route>
       <Route path="/installations" element={<InstallationListScreen />} />
       <Route path="/interventions" element={<InterventionsScreen />} />
+      <Route path="/produits-solen" element={<SolenProductScreen />} />
+      <Route path="/services-solen" element={<SolenServicesScreen />} />
+      <Route path="/simulations-installations" element={<SimulationGuide/>} />
+      <Route path="/simulations-liste" element={<SimulationsListScreen/>} />
       
 
       <Route

@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetInstallationDetailsQuery } from "../slices/installationsApiSlice";
-import { Badge, Col, Row } from "react-bootstrap";
+import { Badge, Button, Col, Row } from "react-bootstrap";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -26,6 +26,9 @@ const InstallationDetailsScreen = () => {
       <Link className="btn btn-light my-3" to={"/installations"}>
         Retour{" "}
       </Link>
+      <Button className="mx-2 btn-sm">
+        Créer le devis dans Dolibarr
+      </Button>
       {isLoading ? (
         <Loader />
       ) : error ? (

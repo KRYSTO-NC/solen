@@ -46,6 +46,7 @@ const getInstallationById = asyncHandler(async (req, res) => {
 // @route POST /api/installations
 // @access Private
 const createInstallation = asyncHandler(async (req, res) => {
+console.log(req.user._id);
   const newInstallation = new Installation({
     createdBy: req.user._id,
     address: "Aucune adresse renseignée",
@@ -64,20 +65,49 @@ const createInstallation = asyncHandler(async (req, res) => {
 // @route PUT /api/installations
 // @access Private
 const updateInstallation = asyncHandler(async (req, res, next) => {
-  const installation = await Installation.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
+  console.log("Received body:", req.body);
+  
+  const idToUpdate = req.body.installationId || req.params.id;
+  
 
-  res.status(200).json({
-    success: true,
-    data: installation,
-  })
-})
+
+  if (!idToUpdate) {
+    return res.status(400).json({ success: false, message: "No ID provided" });
+  }
+
+  const updateData = {
+    benneficiaire: req.body.benneficiaire
+  };
+  
+  console.log("Data to Update:", updateData);
+
+  try {
+    const installation = await Installation.findByIdAndUpdate(
+      idToUpdate,
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!installation) {
+      console.log("Installation not found");
+      return res.status(404).json({ success: false, message: "Installation not found" });
+    }
+
+    console.log("Updated installation:", installation);
+
+    res.status(200).json({
+      success: true,
+      data: installation,
+    });
+  } catch (error) {
+    console.error("Error updating installation:", error);
+    return res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
 
 
 // @desc delete a installation

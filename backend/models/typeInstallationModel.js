@@ -13,7 +13,7 @@ const TypeInstallationSchema = new mongoose.Schema(
     puissance: {
       type: Number,
     },
-
+    
     amperage: {
       type: Number,
     },

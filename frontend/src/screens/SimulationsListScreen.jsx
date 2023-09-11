@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import Paginate from "../components/Paginate";
 import { useState } from "react";
 
-const InstallationListScreen = () => {
+const SimulationsListScreen = () => {
   const { pageNumber } = useParams();
   const { data, isLoading, error, refetch } = useGetInstallationsQuery({
     pageNumber,
@@ -117,4 +117,4 @@ const InstallationListScreen = () => {
   );
 };
 
-export default InstallationListScreen;
+export default SimulationsListScreen;

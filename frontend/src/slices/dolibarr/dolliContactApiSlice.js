@@ -1,13 +1,14 @@
 import { DOLIBAR_URL } from "../../constants/constants";
 import { apiSlice } from "../apiSlice";
-const dolApiKey = process.env.REACT_APP_DOLAPIKEY;
-export const dolliApiSlice = apiSlice.injectEndpoints({
+import { DOLIBARR_API_KEY } from '../../constants/constants'
+
+export const dolliContactApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getContacts: builder.query({
       query: () => ({
         url: `${DOLIBAR_URL}/contacts`,
         headers: {
-          DOLAPIKEY: "wbiW1Eio3OTqDew5483J3QRTx1aOyQ92",
+          DOLAPIKEY: DOLIBARR_API_KEY,
         },
       }),
       keepUnusedDataFor: 5,
@@ -16,7 +17,7 @@ export const dolliApiSlice = apiSlice.injectEndpoints({
         query: (id) => ({
             url: `${DOLIBAR_URL}/contacts/${id}`,
             headers: {
-                DOLAPIKEY: "wbiW1Eio3OTqDew5483J3QRTx1aOyQ92",
+              DOLAPIKEY: DOLIBARR_API_KEY,
             },
           }),
         keepUnusedDataFor: 5,
@@ -28,4 +29,4 @@ export const {
   useGetContactsQuery,
   useGetContactDetailsQuery
   // Ajoutez d'autres exports ici pour les autres queries, mutations, etc.
-} = dolliApiSlice;
+} = dolliContactApiSlice;

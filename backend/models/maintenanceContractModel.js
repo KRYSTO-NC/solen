@@ -6,7 +6,7 @@ const maintenanceContractSchema = mongoose.Schema({
   installationId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Installation", // Le modèle d'installation correspondant
-    required: true
+   
   },
   
   options: [

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetContactsQuery } from '../slices/dolibarr/dolliApiSlice';
+import { useGetContactsQuery } from '../slices/dolibarr/dolliContactApiSlice';
 import { Button, Row } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';

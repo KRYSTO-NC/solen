@@ -1,6 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { Navbar, Nav, Container,  NavDropdown } from "react-bootstrap";
-import { FaPhone, FaSolarPanel, FaUser, FaUserAltSlash, FaUserTimes, FaWrench } from "react-icons/fa";
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import {
+  FaBell,
+  FaPhone,
+  FaProductHunt,
+  FaSolarPanel,
+  FaUser,
+  FaUserAltSlash,
+  FaUserTimes,
+  FaWrench,
+} from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../slices/userApiSlice";
@@ -40,32 +49,68 @@ const Header = () => {
             <Nav className="ms-auto">
               {userInfo ? (
                 <>
-                 <LinkContainer to={"/installations"}>
-                 <Nav.Link>
-                   {" "}
-                   <FaSolarPanel /> Installations
-                 </Nav.Link>
-               </LinkContainer>
-                 <LinkContainer to={"/interventions"}>
-                 <Nav.Link>
-                   {" "}
-                   <FaWrench/> Interventions
-                 </Nav.Link>
-               </LinkContainer>
-                 <LinkContainer to={"/contacts"}>
-                 <Nav.Link>
-                   {" "}
-                   <FaPhone/> contacts
-                 </Nav.Link>
-               </LinkContainer>
-                <NavDropdown title={userInfo?.name} id="username">
-                  <LinkContainer to={"/profile"}>
-                    <NavDropdown.Item> <FaUser/> Profile</NavDropdown.Item>
+                  <NavDropdown title="Simulation" id="basic-nav-dropdown">
+                    <LinkContainer to={"/simulations-liste"}>
+                      <Nav.Link>
+                        <FaProductHunt />Simulations
+                      </Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to={"/simulations-installations"}>
+                      <Nav.Link>
+                        <FaProductHunt /> Créer simulation
+                      </Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to={"/simulations-maintenances"}>
+                      <Nav.Link>
+                        <FaProductHunt /> maintenance simulations
+                      </Nav.Link>
+                    </LinkContainer>
+                  </NavDropdown>
+
+                  <NavDropdown title="installations" id="basic-nav-dropdown">
+                    <LinkContainer to={"/installations"}>
+                      <Nav.Link>
+                      <FaSolarPanel /> Installations 
+                      </Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to={"/simulations-maintenances"}>
+                      <Nav.Link>
+                      <FaWrench />Interventions
+                      </Nav.Link>
+                    </LinkContainer>
+                  </NavDropdown>
+
+                
+                  <NavDropdown title="Catalogue" id="basic-nav-dropdown">
+                    <LinkContainer to={"/produits-solen"}>
+                      <Nav.Link>
+                        <FaProductHunt /> Produits
+                      </Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to={"/services-solen"}>
+                      <Nav.Link>
+                        <FaBell /> Services
+                      </Nav.Link>
+                    </LinkContainer>
+                  </NavDropdown>
+
+                  <LinkContainer to={"/contacts"}>
+                    <Nav.Link>
+                      {" "}
+                      <FaPhone /> contacts
+                    </Nav.Link>
                   </LinkContainer>
-                  <NavDropdown.Item onClick={logoutHandler}>
-                   <FaUserAltSlash/> Deconnexion
-                  </NavDropdown.Item>
-                </NavDropdown>
+                  <NavDropdown title={userInfo?.name} id="username">
+                    <LinkContainer to={"/profile"}>
+                      <NavDropdown.Item>
+                        {" "}
+                        <FaUser /> Profile
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Item onClick={logoutHandler}>
+                      <FaUserAltSlash /> Deconnexion
+                    </NavDropdown.Item>
+                  </NavDropdown>
                 </>
               ) : (
                 <LinkContainer to={"/"}>
@@ -78,7 +123,10 @@ const Header = () => {
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown title="Admin" id="adminmenu">
                   <LinkContainer to={"/admin/userlist"}>
-                    <NavDropdown.Item> <FaUserTimes/> Utilisteurs</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      {" "}
+                      <FaUserTimes /> Utilisteurs
+                    </NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
               )}

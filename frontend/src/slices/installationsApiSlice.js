@@ -32,7 +32,7 @@ export const installationsApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: ['Product'],
+      invalidatesTags: ['Installation'],
     }),
 
     deleteInstallation: builder.mutation({
