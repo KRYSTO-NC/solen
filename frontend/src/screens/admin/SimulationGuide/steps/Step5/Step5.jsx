@@ -180,11 +180,21 @@ const Step5 = ({ installation, onNext }) => {
             {selectedProducts.map((product) => (
               <>
                 <Row>
-                  <Col md={7}>
+                  <Col md={4}>
                     <li key={product.id}>{product.label}</li>
                   </Col>
                   <Col md={3}>
                     <Form.Label>Quantité</Form.Label>
+                    <Form.Control
+                      type="number"
+                      value={product.quantity}
+                      onChange={(e) =>
+                        updateQuantity(product.id, Number(e.target.value))
+                      }
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <Form.Label>Supervision</Form.Label>
                     <Form.Control
                       type="number"
                       value={product.quantity}
