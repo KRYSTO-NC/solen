@@ -11,13 +11,21 @@ import {
 } from "react-bootstrap";
 
 import axios from "axios";
+import { useGetContactDetailsQuery } from "../slices/dolibarr/dolliContactApiSlice";
 
 const InstallationScreen = () => {
     const [installation, setInstallation] = useState([]);
   // get the id from the url
   const { id: installationId } = useParams();
 
-  console.log(installation);
+
+  const {
+    data: demandeur,
+    isLoading,
+    refetch,
+    error,
+  } = useGetContactDetailsQuery(installation.demandeur);
+
 
     useEffect(() => {
         const fetchInstallation = async () => {

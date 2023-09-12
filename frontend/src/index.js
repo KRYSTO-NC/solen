@@ -45,6 +45,7 @@ const routes = createBrowserRouter(
       <Route path="/produits-solen" element={<SolenProductScreen />} />
       <Route path="/services-solen" element={<SolenServicesScreen />} />
       <Route path="/simulations-installations" element={<SimulationGuide/>} />
+      <Route path="/simulations-interventions" element={<SimulationGuide/>} />
       <Route path="/simulations-liste" element={<SimulationsListScreen/>} />
       
 

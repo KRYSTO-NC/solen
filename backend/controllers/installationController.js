@@ -123,7 +123,7 @@ const updateInstallation = asyncHandler(async (req, res, next) => {
   // Retirez le champ createdBy de req.body
   const { createdBy, ...updateData } = req.body;
 
-  console.log("Data to Update:", updateData);
+  console.log("LOG IN CONTROLLER : Data to Update:", updateData);
 
   try {
     const installation = await Installation.findByIdAndUpdate(

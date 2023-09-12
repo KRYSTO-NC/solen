@@ -9,8 +9,6 @@ import Message from "../components/Message";
 
 const InstallationDetailsScreen = () => {
   const { id: productId } = useParams();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const {
     data: installation,
@@ -29,6 +27,8 @@ const InstallationDetailsScreen = () => {
       <Button className="mx-2 btn-sm">
         Créer le devis dans Dolibarr
       </Button>
+
+      <p>ICI le recap de l'installation ou de la simuulationavec lien pour acceder au dolibarr (l'utilisatuer deva être connecter ) </p>
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -76,7 +76,7 @@ const InstallationDetailsScreen = () => {
           <strong>concessionaire:</strong> {installation.concessionaire}
         </Col>
         <Col>
-          <strong>concessionaire:</strong> {installation.concessionaire}
+        
         </Col>
       </Row>
       </>
