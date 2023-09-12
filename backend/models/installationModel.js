@@ -12,11 +12,11 @@ const installationSchema = mongoose.Schema(
     },
 
     // si True type abonement
-    raccrodReseau: {
+    raccordReseau: {
       type: Boolean,
     },
 
-    typeAbonement: {
+    typeAbonnement: {
       type: String,
       enum: ["Basse tension", "Haute tension", "non defini"],
    
@@ -78,14 +78,16 @@ const installationSchema = mongoose.Schema(
       type: String,
       default: "non renseigné",
     },
-    address: {
-      type: String,
-      default: "Aucune adresse renseignée",
-    },
+  
 
     numClientEnercal: {
       type: String,
       default: "non renseigné",
+    },
+
+    address: {
+      type: String,
+      default: "Aucune adresse renseignée",
     },
 
     // Gestion de la garantie
@@ -195,10 +197,6 @@ const installationSchema = mongoose.Schema(
       default: 0,
     },
 
-    // puissancePvEtHybrid: {
-    //   type: Number,
-    //   default: 0,
-    // },
 
     puissancePv: {
       type: Number,

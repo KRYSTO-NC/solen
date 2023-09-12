@@ -17,6 +17,8 @@ const InstallationScreen = () => {
   // get the id from the url
   const { id: installationId } = useParams();
 
+  console.log(installation);
+
     useEffect(() => {
         const fetchInstallation = async () => {
             const { data } = await axios.get(`/api/installations/${installationId}`);
@@ -25,7 +27,7 @@ const InstallationScreen = () => {
         fetchInstallation();
 
     },[installationId])
-
+    console.log(installation);
   return (
     <>
       <Link className="btn btn-light my-3" to="/installations">

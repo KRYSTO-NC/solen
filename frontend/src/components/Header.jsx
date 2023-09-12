@@ -52,7 +52,8 @@ const Header = () => {
                   <NavDropdown title="Simulation" id="basic-nav-dropdown">
                     <LinkContainer to={"/simulations-liste"}>
                       <Nav.Link>
-                        <FaProductHunt />Simulations
+                        <FaProductHunt />
+                        Simulations
                       </Nav.Link>
                     </LinkContainer>
                     <LinkContainer to={"/simulations-installations"}>
@@ -70,17 +71,17 @@ const Header = () => {
                   <NavDropdown title="installations" id="basic-nav-dropdown">
                     <LinkContainer to={"/installations"}>
                       <Nav.Link>
-                      <FaSolarPanel /> Installations 
+                        <FaSolarPanel /> Installations
                       </Nav.Link>
                     </LinkContainer>
                     <LinkContainer to={"/simulations-maintenances"}>
                       <Nav.Link>
-                      <FaWrench />Interventions
+                        <FaWrench />
+                        Interventions
                       </Nav.Link>
                     </LinkContainer>
                   </NavDropdown>
 
-                
                   <NavDropdown title="Catalogue" id="basic-nav-dropdown">
                     <LinkContainer to={"/produits-solen"}>
                       <Nav.Link>
@@ -94,12 +95,6 @@ const Header = () => {
                     </LinkContainer>
                   </NavDropdown>
 
-                  <LinkContainer to={"/contacts"}>
-                    <Nav.Link>
-                      {" "}
-                      <FaPhone /> contacts
-                    </Nav.Link>
-                  </LinkContainer>
                   <NavDropdown title={userInfo?.name} id="username">
                     <LinkContainer to={"/profile"}>
                       <NavDropdown.Item>

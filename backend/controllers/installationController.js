@@ -64,21 +64,65 @@ console.log(req.user._id);
 // @desc Update an installation
 // @route PUT /api/installations
 // @access Private
+// const updateInstallation = asyncHandler(async (req, res, next) => {
+//   console.log("Received body:", req.body);
+  
+//   const idToUpdate = req.body.installationId ;
+  
+
+
+//   if (!idToUpdate) {
+//     return res.status(400).json({ success: false, message: "No ID provided" });
+//   }
+
+//   const updateData = {
+//     benneficiaire: req.body.benneficiaire,
+//     demandeur: req.body.demandeur  // Ajout de cette ligne
+//   };
+  
+//   console.log("Data to Update:", updateData);
+
+//   try {
+//     const installation = await Installation.findByIdAndUpdate(
+//       idToUpdate,
+//       updateData,
+//       {
+//         new: true,
+//         runValidators: true,
+//       }
+//     );
+
+//     if (!installation) {
+//       console.log("Installation not found");
+//       return res.status(404).json({ success: false, message: "Installation not found" });
+//     }
+
+//     console.log("Updated installation:", installation);
+
+//     res.status(200).json({
+//       success: true,
+//       data: installation,
+//     });
+//   } catch (error) {
+//     console.error("Error updating installation:", error);
+//     return res.status(500).json({ success: false, message: "Internal Server Error" });
+//   }
+// });
+// @desc Update an installation
+// @route PUT /api/installations
+// @access Private
 const updateInstallation = asyncHandler(async (req, res, next) => {
   console.log("Received body:", req.body);
   
-  const idToUpdate = req.body.installationId || req.params.id;
-  
-
+  const idToUpdate = req.body.installationId;
 
   if (!idToUpdate) {
     return res.status(400).json({ success: false, message: "No ID provided" });
   }
 
-  const updateData = {
-    benneficiaire: req.body.benneficiaire
-  };
-  
+  // Retirez le champ createdBy de req.body
+  const { createdBy, ...updateData } = req.body;
+
   console.log("Data to Update:", updateData);
 
   try {

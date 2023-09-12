@@ -39,6 +39,7 @@ const SimulationGuide = () => {
       setStepIndex(stepIndex - 1);
     }
   };
+  console.log("handleNext function in SimulationGuide: ", handleNext);
 
   const stepsComponents = [Step1, Step2, Step3, Step4, Step5, Step6, Step7];
   const CurrentStepComponent = stepsComponents[stepIndex];
@@ -47,6 +48,7 @@ const SimulationGuide = () => {
     <div className="d-flex flex-column" style={{ height: '90vh' }}>
       <div className="flex-grow-1">
       <CurrentStepComponent onNext={handleNext} installation={installationId} />
+
       </div>
       <div className="d-flex justify-content-center pb-4 pt-4">
         <button
@@ -69,6 +71,7 @@ const SimulationGuide = () => {
         <button className="btn btn-danger" onClick={() => navigate('/')}>
           <FaTimes />
         </button>
+        
       </div>
     </div>
   );

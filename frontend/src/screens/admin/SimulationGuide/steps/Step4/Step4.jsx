@@ -1,28 +1,258 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetThirdPartiesQuery } from "../../../../../slices/dolibarr/dolliThirdPartyApiSlice";
 import Message from "../../../../../components/Message";
 import Loader from "../../../../../components/Loader";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import SearchBar from "../../../../../components/SearchBar";
 import { FaPlusCircle } from "react-icons/fa";
-import { useGetInstallationDetailsQuery } from "../../../../../slices/installationsApiSlice";
+import {
+  useGetInstallationDetailsQuery,
+  useUpdateInstallationMutation,
+} from "../../../../../slices/installationsApiSlice";
+import FormContainer from "../../../../../components/FormContainer";
+import { toast } from "react-toastify";
 
-const Step4 = ({ installation }) => {
+const Step4 = ({ installation, onNext }) => {
   // Ici, "installation" contient votre installationId.
-  console.log("Installation ID dans Step2:", installation);
+  console.log("Installation ID dans Step4:", installation);
+
+  // Initialisation des états
+  const [concessionaire, setConcessionaire] = useState("");
+  const [isRaccordeAuReseau, setIsRaccordeAuReseau] = useState(false);
+  const [typeAbonnement, setTypeAbonnement] = useState("");
+  const [typeRaccordement, setTypeRaccordement] = useState("non defini");
+  const [puissance, setPuissance] = useState(0);
+  const [amperage, setAmperage] = useState(0);
+  const [numCompteurEnercal, setNumCompteurEnercal] = useState("non renseigné");
+  const [numClientEnercal, setNumClientEnercal] = useState("non renseigné");
+  const [numCompteurEEC, setNumCompteurEEC] = useState("non renseigné");
+  const [address, setAddress] = useState("non renseigné");
+  const [typeInstallation, setTypeInstallation] = useState({
+    raccordement: "non defini",
+    puissance: 0,
+    amperage: 0,
+  });
+
+  // Pour raccordement
+  const handleRaccordementChange = (e) => {
+    setTypeInstallation({
+      ...typeInstallation,
+      raccordement: e.target.value,
+    });
+  };
+
+  // Pour puissance
+  const handlePuissanceChange = (e) => {
+    setTypeInstallation({
+      ...typeInstallation,
+      puissance: e.target.value,
+    });
+  };
+
+  // Pour amperage
+  const handleAmperageChange = (e) => {
+    setTypeInstallation({
+      ...typeInstallation,
+      amperage: e.target.value,
+    });
+  };
 
   const {
     data: simulation,
     isLoading,
-    refetch,
     error,
   } = useGetInstallationDetailsQuery(installation);
-refetch()
-  console.log(simulation);
+
+  const [updateInstallation, { isLoading: isUpdating, isError, isSuccess }] =
+    useUpdateInstallationMutation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await updateInstallation({
+        installationId: installation,
+        concessionaire,
+        raccordReseau: isRaccordeAuReseau,
+        typeAbonnement,
+        typeRaccordement,
+        puissance,
+        amperage,
+        numCompteurEnercal,
+        numClientEnercal,
+        address,
+        typeInstallation,
+        status: "Projet",
+      });
+      toast.success("Mise à jour réussie.");
+    } catch (error) {
+      toast.error("Une erreur est survenue lors de la mise à jour.");
+      console.error("Erreur:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      onNext(); // ou handleNext() si vous renommez la prop
+    }
+  }, [isSuccess, onNext]);
 
   return (
     <>
-      <h1>step 2</h1>
+      <h1>Détails sur l'installation - {simulation.refference}</h1>
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <p>Erreur: {error}</p>
+      ) : (
+        <FormContainer>
+          <Form onSubmit={handleSubmit}>
+            <Col md={8}>
+              <Form.Group controlId="address" className="my-2">
+                <Form.Label>Adresse</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </Form.Group>
+            </Col>
+
+            <Row>
+              <Col md={4}>
+                <Form.Group controlId="concessionaire" className="my-2">
+                  <Form.Label>Concessionaire</Form.Label>
+                  <Form.Select
+                    value={concessionaire}
+                    onChange={(e) => setConcessionaire(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Choisir un concessionaire
+                    </option>
+                    <option value="EEC">EEC</option>
+                    <option value="Enercal">Enercal</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+
+              <Col md={4}>
+                <Form.Group controlId="raccrodReseau" className="my-2">
+                  <Form.Label>Raccordée au réseau</Form.Label>
+                  <Form.Select
+                    value={isRaccordeAuReseau.toString()}
+                    onChange={(e) =>
+                      setIsRaccordeAuReseau(e.target.value === "true")
+                    }
+                  >
+                    <option value="" disabled>
+                      Choisir
+                    </option>
+                    <option value="true">Oui</option>
+                    <option value="false">Non</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+
+              {isRaccordeAuReseau && (
+                <>
+                  <Col md={4}>
+                    <Form.Group controlId="typeAbonnement" className="my-2">
+                      <Form.Label>Type d'abonnement</Form.Label>
+                      <Form.Select
+                        value={typeAbonnement}
+                        onChange={(e) => setTypeAbonnement(e.target.value)}
+                      >
+                        <option value="" disabled>
+                          Choisir un type d'abonnement
+                        </option>
+                        <option value="Basse tension">Basse tension</option>
+                        <option value="Haute tension">Haute tension</option>
+                        <option value="non defini">Non défini</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group controlId="typeRaccordement" className="my-2">
+                      <Form.Label>Type de raccordement</Form.Label>
+                      <Form.Select
+                        value={typeInstallation.raccordement}
+                        onChange={handleRaccordementChange} 
+                      >
+                        <option value="mono">Mono</option>
+                        <option value="tri">Tri</option>
+                        <option value="non defini">Non défini</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group controlId="puissance" className="my-2">
+                      <Form.Label>Puissance</Form.Label>
+                      <Form.Control
+                        type="number"
+                        value={typeInstallation.puissance}
+                        onChange={handlePuissanceChange}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group controlId="amperage" className="my-2">
+                      <Form.Label>Amperage</Form.Label>
+                      <Form.Control
+                        type="number"
+                        value={typeInstallation.amperage}
+                        onChange={handleAmperageChange}
+                      />
+                    </Form.Group>
+                  </Col>
+                </>
+              )}
+
+              {concessionaire === "Enercal" && (
+                <>
+                  {/* Fields for Enercal */}
+                  <Col md={4}>
+                    <Form.Group controlId="numCompteurEnercal" className="my-2">
+                      <Form.Label>Numéro du compteur Enercal</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={numCompteurEnercal}
+                        onChange={(e) => setNumCompteurEnercal(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+
+                  <Col md={4}>
+                    <Form.Group controlId="numClientEnercal" className="my-2">
+                      <Form.Label>Numéro du client Enercal</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={numClientEnercal}
+                        onChange={(e) => setNumClientEnercal(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                </>
+              )}
+              {concessionaire === "EEC" && (
+                <>
+                  <Col md={4}>
+                    <Form.Group controlId="numCompteurEEC" className="my-2">
+                      <Form.Label>Numéro du compteur EEC</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={numCompteurEEC}
+                        onChange={(e) => setNumCompteurEEC(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                </>
+              )}
+            </Row>
+            <Button type="submit" variant="primary">
+              Suivant
+            </Button>
+          </Form>
+        </FormContainer>
+      )}
     </>
   );
 };

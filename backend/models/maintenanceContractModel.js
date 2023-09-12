@@ -8,7 +8,7 @@ const maintenanceContractSchema = mongoose.Schema({
     ref: "Installation", // Le modèle d'installation correspondant
    
   },
-  
+  // a reccup de SOLEN 
   options: [
     {
       optionId: {
