@@ -42,6 +42,7 @@ const InstallationScreen = () => {
         Retour
       </Link>
       <Row>
+     
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>

@@ -42,7 +42,8 @@ const InstallationListScreen = () => {
     <>
       <Row className="align-items-center">
         <Col>
-          <h2>Installations</h2>
+        <h2 >Installations</h2>
+      
         </Col>
         <Col className="text-end">
           <select className="select-filter" onChange={(e) => setSelectedStatus(e.target.value)}>

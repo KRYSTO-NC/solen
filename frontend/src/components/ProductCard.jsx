@@ -1,12 +1,12 @@
-import React from "react";
-import { Card, Col, Row } from "react-bootstrap";
-import { useGetProductDetailsQuery } from "../slices/dolibarr/dolliProductApiSlice";
-import Loader from "./Loader";
-import Message from "./Message";
+import React from 'react'
+import { Card, Col, Row } from 'react-bootstrap'
+import { useGetProductDetailsQuery } from '../slices/dolibarr/dolliProductApiSlice'
+import Loader from './Loader'
+import Message from './Message'
 
 const ProductCard = ({ product, prof }) => {
   const { data, isLoading, refetch, error } = useGetProductDetailsQuery(
-    product.ref
+    product.ref,
   );
 
   if (isLoading) {
@@ -21,29 +21,23 @@ const ProductCard = ({ product, prof }) => {
     );
   }
 
-  const priceKey = prof ? "2" : "1";
-  const calculatedPrice = data.multiprices
-    ? typeof data.multiprices[priceKey] !== "undefined" &&
-      data.multiprices[priceKey] !== null
-      ? parseFloat(data.multiprices[priceKey]).toFixed(0) + " XPF"
-      : "Non disponible"
-    : "Non disponible";
-
   return (
     <Col md={3}>
       <Card className="mb-4 shadow-sm">
         <Card.Body>
-          <Card.Title style={{ 
-            fontSize: '1rem', 
-            whiteSpace: 'nowrap', 
-            overflow: 'hidden', 
-            textOverflow: 'ellipsis', 
-            color: "blue"
-          }}>
+          <Card.Title
+            style={{
+              fontSize: '1rem',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              color: 'blue',
+            }}
+          >
             {data.label}
           </Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
-             <strong>REF :</strong> {data.ref}
+            <strong>REF :</strong> {data.ref}
           </Card.Subtitle>
           <Row>
             <Col md={6}>
@@ -60,7 +54,11 @@ const ProductCard = ({ product, prof }) => {
             )}
             <Col md={12}>
               <Card.Text>
-                <strong>Prix:</strong> {calculatedPrice}
+                {prof ? (
+                  <p>{Math.round(data.multiprices?.['1'] ?? '0')} XPF</p>
+                ) : (
+                  <p>{Math.round(data.multiprices?.['2'] ?? '0')} XPF</p>
+                )}
               </Card.Text>
             </Col>
           </Row>

@@ -24,6 +24,19 @@ export const dolliProposalApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
     }),
 
+    createProposal: builder.mutation({
+      query: ({ proposalData }) => {
+        return {
+          url: `${DOLIBAR_URL}/proposals`,
+          method: 'POST',
+          headers: {
+            DOLAPIKEY: DOLIBARR_API_KEY,
+          },
+          body: proposalData, // les données du formulaire vont ici
+        }
+      },
+      // invalidatesTags: ['Product'],
+    }),
     createLine: builder.mutation({
       query: ({ proposalId, lineData }) => {
         return {
@@ -57,4 +70,5 @@ export const {
   useGetProposalDetailsQuery,
   useDeleteProposalLineMutation,
   useCreateLineMutation,
+  useCreateProposalMutation,
 } = dolliProposalApiSlice
