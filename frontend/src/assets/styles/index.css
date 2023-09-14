@@ -82,3 +82,16 @@ table th {
   background-color: #3c4c5d;
   color: white;
 }
+
+
+.thirdParty_card{
+  background-color: rgb(206, 206, 206);
+  border: 2px solid black;
+
+}
+
+.stockage-section{
+  border: 3px solid black;
+  padding: 10px;
+  margin: 30px 0;
+}

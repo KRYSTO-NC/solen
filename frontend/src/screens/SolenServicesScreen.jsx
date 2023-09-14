@@ -7,7 +7,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { FaEye } from "react-icons/fa";
 
 const SolenServicesScreen = () => {
-  const { data, isLoading, error, refetch } = useGetProductsQuery();
+  const { data, isLoading, error, refetch } = useGetProductsQuery(19);
   console.log(data);
   return (
     <Row>
@@ -31,7 +31,6 @@ const SolenServicesScreen = () => {
                 <th>Prix public</th>
                 <th>Prix Prof</th>
                 <th>Prix Revendeur</th>
-                <th>En stock</th>
                 <th></th>
               </tr>
             </thead>
@@ -49,15 +48,7 @@ const SolenServicesScreen = () => {
                       <td>{Math.round(product.multiprices?.["2"] ?? "0")} XPF</td>
                       <td>{Math.round(product.multiprices?.["3"] ?? "0")} XPF</td>
 
-                      <td>
-                        {product.stock_reel != null
-                          ? typeof product.stock_reel === "number"
-                            ? product.stock_reel.toFixed(2)
-                            : typeof product.stock_reel === "string"
-                            ? parseFloat(product.stock_reel).toFixed(2)
-                            : product.stock_reel
-                          : "0"}
-                      </td>
+                    
                       <td>
                         <LinkContainer to={`/produit/${product.id}`}>
                           <Button variant="success" className="btn-sm mx-2">

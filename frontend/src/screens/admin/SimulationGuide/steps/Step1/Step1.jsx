@@ -9,6 +9,8 @@ const Step1 = ({ onNext }) => {
         if (window.confirm("Voulez-vous créer une nouvelle simulation ?")) {
           try {
             const result = await createInstallation();
+            console.log("Résultat complet:", result);
+            console.log("Data:", result.data);
             const installationId = result.data._id;  // Accédez aux données ici
            
             if (installationId) {
@@ -16,6 +18,7 @@ const Step1 = ({ onNext }) => {
                 onNext(installationId);  // Passez l'objet à la fonction de rappel onNext
               }
           } catch (error) {
+            console.log("Erreur complète:", error);
             toast.error(error?.data?.message || error?.message);
           }
         }

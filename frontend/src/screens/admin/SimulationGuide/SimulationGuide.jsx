@@ -7,6 +7,8 @@ import Step4 from './steps/Step4/Step4';
 import Step5 from './steps/Step5/Step5';
 import Step6 from './steps/Step6/Step6';
 import Step7 from './steps/Step7/Step7';
+import Step8 from './steps/Step8/Step8';
+import Step9 from './steps/Step9/Step9';
 import { FaArrowLeft, FaArrowRight, FaCheck, FaTimes } from 'react-icons/fa';
 
 const SimulationGuide = () => {
@@ -27,7 +29,7 @@ const SimulationGuide = () => {
     if (installation) {
       setInstallationId(installation);
     }
-    if (stepIndex < 6) {
+    if (stepIndex < 8) {
       setStepIndex(stepIndex + 1);
     } else {
       navigate('/');
@@ -41,7 +43,7 @@ const SimulationGuide = () => {
   };
   console.log("handleNext function in SimulationGuide: ", handleNext);
 
-  const stepsComponents = [Step1, Step2, Step3, Step4, Step5, Step6, Step7];
+  const stepsComponents = [Step1, Step2, Step3, Step4, Step5, Step6, Step7, Step8, Step9];
   const CurrentStepComponent = stepsComponents[stepIndex];
 
   return (

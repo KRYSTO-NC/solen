@@ -12,11 +12,12 @@ import Message from "../../../../../components/Message";
 
 const Step5 = ({ installation, onNext }) => {
   const { data: simmulation } = useGetInstallationDetailsQuery(installation);
+  console.log(installation);
   const {
     data: products,
     isLoading: loadingProducts,
     error: errorProducts,
-  } = useGetProductsQuery();
+  } = useGetProductsQuery(23);
 
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [stockage, setStockage] = useState(false);
@@ -24,17 +25,18 @@ const Step5 = ({ installation, onNext }) => {
   const [capaciteBatterie, setCapaciteBatterie] = useState(0);
 
   const addProduct = (product) => {
-    setSelectedProducts((prevProducts) => [...prevProducts, { ref: product.id, quantity: 1, supervision: 0 }]);
+    console.log(product);
+    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, ref: product.id, quantity: 1, supervision: 0 }]);
   };
 
-  const removeProduct = (id) => {
-    setSelectedProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+  const removeProduct = (ref) => {
+    setSelectedProducts((prevProducts) => prevProducts.filter((product) => product.ref !== ref));
   };
-
-  const updateQuantity = (id, value, field) => {
+  
+  const updateQuantity = (ref, value, field) => {
     setSelectedProducts((prevProducts) =>
       prevProducts.map((product) =>
-        product.id === id ? { ...product, [field]: value } : product
+        product.ref === ref ? { ...product, [field]: value } : product
       )
     );
   };
@@ -43,13 +45,17 @@ const Step5 = ({ installation, onNext }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(selectedProducts);
     try {
       await updateInstallation({
         installationId: installation,
         stockage,
         typeBatterie,
+        capaciteBatterie,
         batteries : selectedProducts,
       });
+      console.log("selectedProducts", selectedProducts);
+      console.log("updatedInstallation", updateInstallation);
       toast.success("Mise à jour réussie.");
     } catch (error) {
       toast.error("Une erreur est survenue lors de la mise à jour.");
@@ -66,7 +72,7 @@ const Step5 = ({ installation, onNext }) => {
     <>
       <div className="heading">
 
-        <h1>Stockage de l'installation : {simmulation.ref}</h1>
+        <h1>Stockage de l'installation : {simmulation.refference}</h1>
       </div>
       <Form onSubmit={handleSubmit}>
         <Row>

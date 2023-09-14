@@ -14,7 +14,7 @@ const App = () => {
          <Outlet/>
         </Container>
       </main>
-      <Footer/>
+
       <ToastContainer />
     </>
   );

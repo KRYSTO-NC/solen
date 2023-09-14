@@ -40,5 +40,6 @@ export const dolliThirdPartyApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetThirdPartiesQuery,
   useGetThirdPartyDetailsQuery,
+
   // Ajoutez d'autres exports ici pour les autres queries, mutations, etc.
 } = dolliThirdPartyApiSlice

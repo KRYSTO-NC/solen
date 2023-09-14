@@ -22,6 +22,7 @@ const Step4 = ({ installation, onNext }) => {
   const [typeAbonnement, setTypeAbonnement] = useState("");
   const [typeRaccordement, setTypeRaccordement] = useState("non defini");
   const [puissance, setPuissance] = useState(0);
+  const [prof, setProf] = useState(false);
   const [amperage, setAmperage] = useState(0);
   const [numCompteurEnercal, setNumCompteurEnercal] = useState("non renseigné");
   const [numClientEnercal, setNumClientEnercal] = useState("non renseigné");
@@ -80,6 +81,7 @@ const Step4 = ({ installation, onNext }) => {
         numCompteurEnercal,
         numClientEnercal,
         address,
+        prof,
         typeInstallation,
         status: "Projet",
       });
@@ -135,6 +137,16 @@ const Step4 = ({ installation, onNext }) => {
               </Col>
 
               <Col md={4}>
+                <Form.Group controlId="prof" className="my-2">
+                  <Form.Check
+                    type="checkbox"
+                    label="Le client est-il un professionnel ?"
+                    checked={prof}
+                    onChange={(e) => setProf(e.target.checked)}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={4}>
                 <Form.Group controlId="raccrodReseau" className="my-2">
                   <Form.Label>Raccordée au réseau</Form.Label>
                   <Form.Select
@@ -175,7 +187,7 @@ const Step4 = ({ installation, onNext }) => {
                       <Form.Label>Type de raccordement</Form.Label>
                       <Form.Select
                         value={typeInstallation.raccordement}
-                        onChange={handleRaccordementChange} 
+                        onChange={handleRaccordementChange}
                       >
                         <option value="mono">Mono</option>
                         <option value="tri">Tri</option>

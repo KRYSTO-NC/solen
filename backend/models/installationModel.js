@@ -15,6 +15,10 @@ const installationSchema = mongoose.Schema(
     raccordReseau: {
       type: Boolean,
     },
+  
+    prof: {
+      type: Boolean,
+    },
 
     typeAbonnement: {
       type: String,
@@ -176,6 +180,7 @@ const installationSchema = mongoose.Schema(
     datePrevisionelPose: {
       type: Date,
     },
+    
     datePose: {
       type: Date,
     },
@@ -225,50 +230,35 @@ const installationSchema = mongoose.Schema(
     },
     batteries: [
       {
-        ref: {
-          type: String,
-        },
-        nombre: {
-          type: Number,
-        },
-        suppervision: {
-          type: Number,
-        },
+        _id: false,  // Désactive la génération automatique de _id
+        ref: { type: String },
+        quantity: { type: Number },
+        supervision: { type: Number },
       },
     ],
 
     onduleurs: [
       {
-        ref: {
-          type: String,
-        },
-        nombre: {
-          type: Number,
-        },
+        _id: false,  // Désactive la génération automatique de _id
+        ref: { type: String },
+        quantity: { type: Number },
       },
     ],
     systemeDeSupportage: [
       {
-        ref: {
-          type: String,
-        },
-        nombre: {
-          type: Number,
-        },
+        _id: false,  // Désactive la génération automatique de _id
+        ref: { type: String },
+        quantity: { type: Number },
+
       },
     ],
-
+    
     panneaux: [
       {
-        ref: {
-          type: String,
-        },
-        nombre: {
-          type: Number,
-        },
-        suppervision: {
-          type: Number,
-        },
+        _id: false,  // Désactive la génération automatique de _id
+        ref: { type: String },
+        quantity: { type: Number },
+        supervision: { type: Number },
       },
     ],
     administratif: [

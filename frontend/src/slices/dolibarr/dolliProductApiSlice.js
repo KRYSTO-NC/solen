@@ -5,22 +5,18 @@ import { apiSlice } from '../apiSlice'
 export const dolliProductApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: () => {
-        // Commencez par les paramètres fixes.
-        // obtiens tout les produits et service avec le tag SOLEN (19)
-        let params = `category=19`
-
-   
-        // Construisez l'URL complète avec les paramètres.
+      query: (category) => {
+        let params = `category=${category}`;
         return {
           url: `${DOLIBAR_URL}/products?${params}`,
           headers: {
             DOLAPIKEY: DOLIBARR_API_KEY,
           },
-        }
+        };
       },
       keepUnusedDataFor: 5,
     }),
+    
     getProductCategories: builder.query({
       query: () => ({
         // Ajoutez "variant_filter" comme paramètre ici.
