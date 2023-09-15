@@ -9,6 +9,7 @@ const ProductCard = ({ product, prof }) => {
     product.ref,
   );
 
+
   if (isLoading) {
     return <Loader />;
   }
@@ -55,9 +56,9 @@ const ProductCard = ({ product, prof }) => {
             <Col md={12}>
               <Card.Text>
                 {prof ? (
-                  <p>{Math.round(data.multiprices?.['1'] ?? '0')} XPF</p>
-                ) : (
                   <p>{Math.round(data.multiprices?.['2'] ?? '0')} XPF</p>
+                ) : (
+                  <p>{Math.round(data.multiprices?.['1'] ?? '0')} XPF</p>
                 )}
               </Card.Text>
             </Col>

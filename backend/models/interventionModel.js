@@ -6,6 +6,11 @@ const interventionSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  
+  idPropal: {
+    type: String,
+    default: null,
+  },
 
   installationId: {
     type: mongoose.Schema.Types.ObjectId,

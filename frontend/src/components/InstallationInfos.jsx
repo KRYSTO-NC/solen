@@ -68,11 +68,11 @@ const InstallationInfos = ({ installation }) => {
               )}
             </Card.Text>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Card.Text>
               <strong>Concessionaire:</strong>{' '}
               {installation.concessionaire ? (
-                <p>{installation.concessionaire}</p>
+                <p className='tag'>{installation.concessionaire}</p>
               ) : (
                 <FaTimes
                   style={{ color: 'red', fontSize: '20px', marginLeft: '20px' }}

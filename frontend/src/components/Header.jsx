@@ -74,12 +74,7 @@ const Header = () => {
                         <FaSolarPanel /> Installations
                       </Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to={"/simulations-maintenances"}>
-                      <Nav.Link>
-                        <FaWrench />
-                        Interventions
-                      </Nav.Link>
-                    </LinkContainer>
+                   
                   </NavDropdown>
 
                   <NavDropdown title="Catalogue" id="basic-nav-dropdown">

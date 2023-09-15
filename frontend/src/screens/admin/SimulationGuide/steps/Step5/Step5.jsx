@@ -17,7 +17,7 @@ const Step5 = ({ installation, onNext }) => {
     data: products,
     isLoading: loadingProducts,
     error: errorProducts,
-  } = useGetProductsQuery(23);
+  } = useGetProductsQuery(22);
 
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [stockage, setStockage] = useState(false);
@@ -26,7 +26,7 @@ const Step5 = ({ installation, onNext }) => {
 
   const addProduct = (product) => {
     console.log(product);
-    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, ref: product.id, quantity: 1, supervision: 0 }]);
+    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, ref: product.id, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"} }]);
   };
 
   const removeProduct = (ref) => {

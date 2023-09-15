@@ -3,11 +3,26 @@ import mongoose from "mongoose";
 
 
 const maintenanceContractSchema = mongoose.Schema({
+
+
   installationId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Installation", // Le modèle d'installation correspondant
    
   },
+
+  status: {
+    type: String,
+    enum: ['Template', 'Etude', 'En Service', 'Projet', 'Sans Suite'],
+    default: 'Template',
+  },
+
+  idPropal: {
+    type: String,
+    default: null,
+  },
+
+  
   // a reccup de SOLEN 
   options: [
     {

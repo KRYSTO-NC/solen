@@ -17,7 +17,7 @@ const Step8 = ({ installation, onNext }) => {
     data: products,
     isLoading: loadingProducts,
     error: errorProducts,
-  } = useGetProductsQuery(25);
+  } = useGetProductsQuery(5);
 
   const [selectedProducts, setSelectedProducts] = useState([]);
 
@@ -25,7 +25,7 @@ const Step8 = ({ installation, onNext }) => {
     console.log(product);
     setSelectedProducts((prevProducts) => [
       ...prevProducts,
-      { id: product.id, ref: product.id, quantity: 1, supervision: 0 },
+      { id: product.id, ref: product.id, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"}  },
     ]);
   };
 

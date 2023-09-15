@@ -7,7 +7,7 @@ import Loader from '../components/Loader'
 import { useLoginMutation } from '../slices/userApiSlice'
 import { setCredentials } from '../slices/authSlice'
 import { toast } from 'react-toastify'
-import bg from '../assets/solar_panel_bg.jpeg'
+import bg from '../assets/solar_panel_bg.jpg'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')

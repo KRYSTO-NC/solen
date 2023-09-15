@@ -22,26 +22,9 @@ connectDB();
 const importData = async () => {
   try {
     await User.deleteMany();
-    await Installation.deleteMany();
-    await Intervention.deleteMany();
-    await MaintenanceContract.deleteMany();
-    await TypeInstallation.deleteMany();
-    await Option.deleteMany();
-
-
     const createdUsers = await User.insertMany(users);
     const adminUser = createdUsers[0]._id;
     
-    const sampleInstallations = installations.map((installation) => {
-      return { ...installation, createdBy: adminUser };
-    });
-    
-    for (const installation of sampleInstallations) {
-      const newInstallation = new Installation(installation);
-      await newInstallation.save();
-    }
-
-    await Option.insertMany(options);
     
     console.log("Data Imported!".green.inverse);
     process.exit();

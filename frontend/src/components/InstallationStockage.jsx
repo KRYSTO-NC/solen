@@ -3,6 +3,8 @@ import { Col, Row } from "react-bootstrap";
 import ProductCard from "./ProductCard";
 
 const InstallationStockage = ({ batteries, capaciteBatterie , prof }) => {
+
+
   return (
 
     

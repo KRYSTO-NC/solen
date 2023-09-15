@@ -10,6 +10,7 @@ const installationSchema = mongoose.Schema(
     refference: {
       type: String,
     },
+
     idPropal: {
       type: String,
       default: null,
@@ -66,6 +67,8 @@ const installationSchema = mongoose.Schema(
       enum: ['Template', 'Etude', 'En Service', 'Projet', 'Sans Suite'],
       default: 'Template',
     },
+
+
     demandeur: {
       type: String,
       default: 'non renseigné',
@@ -113,7 +116,7 @@ const installationSchema = mongoose.Schema(
 
     // Informations sur la demande EEC
     demandeEEC: {
-      date: {
+      eecDate: {
         type: Date,
       },
       dateReponse: {
@@ -121,7 +124,8 @@ const installationSchema = mongoose.Schema(
       },
       status: {
         type: String,
-        enum: ['enDemande', 'Accepté', 'Refusé', 'sous-reserve'],
+        enum: ['Non Commencé','En Demande', 'Accepté', 'Refusé', 'sous-reserve'],
+        default: 'Non Commencé',
       },
       remarque: {
         type: String,
@@ -130,7 +134,7 @@ const installationSchema = mongoose.Schema(
     },
     // Informations sur la demande Enercal
     demandeEnercal: {
-      date: {
+      enercalDate: {
         type: Date,
       },
       dateReponse: {
@@ -138,7 +142,8 @@ const installationSchema = mongoose.Schema(
       },
       status: {
         type: String,
-        enum: ['enDemande', 'Accepté', 'Refusé', 'sous-reserve'],
+        enum: ['Non Commencé','En Demande', 'Accepté', 'Refusé', 'sous-reserve'],
+        default: 'Non Commencé',
       },
       remarque: {
         type: String,
@@ -147,7 +152,7 @@ const installationSchema = mongoose.Schema(
     },
     // Informations sur la demande Dimenc
     demandeDimenc: {
-      date: {
+      ddimencDate: {
         type: Date,
       },
       dateAcusee: {
@@ -158,7 +163,8 @@ const installationSchema = mongoose.Schema(
       },
       status: {
         type: String,
-        enum: ['enDemande', 'Accepté', 'Refusé', 'sous-reserve'],
+        enum: ['Non Commencé','En Demande', 'Accepté', 'Refusé', 'sous-reserve'],
+        default: 'Non Commencé',
       },
       remarque: {
         type: String,
@@ -167,7 +173,7 @@ const installationSchema = mongoose.Schema(
     },
     // Informations sur la conformité
     conformite: {
-      date: {
+      conformiteDate: {
         type: Date,
       },
       idTiers: {
@@ -177,6 +183,11 @@ const installationSchema = mongoose.Schema(
         type: String,
         default: 'non renseigné',
       },
+      status: {
+        type: String,
+        enum: ['Non Commencé','En Demande', 'Accepté', 'Refusé', 'sous-reserve'],
+        default: 'Non Commencé',
+      },  
     },
 
     datePrevisionelPose: {
@@ -235,6 +246,10 @@ const installationSchema = mongoose.Schema(
         ref: { type: String },
         quantity: { type: Number },
         supervision: { type: Number },
+        multiprices: {
+          pro: { type: Number },
+          part: { type: Number },
+        },
       },
     ],
 
@@ -243,6 +258,10 @@ const installationSchema = mongoose.Schema(
         _id: false, // Désactive la génération automatique de _id
         ref: { type: String },
         quantity: { type: Number },
+        multiprices: {
+          pro: { type: Number },
+          part: { type: Number },
+        },
       },
     ],
     systemeDeSupportage: [
@@ -250,6 +269,10 @@ const installationSchema = mongoose.Schema(
         _id: false, // Désactive la génération automatique de _id
         ref: { type: String },
         quantity: { type: Number },
+        multiprices: {
+          pro: { type: Number },
+          part: { type: Number },
+        },
       },
     ],
 
@@ -259,6 +282,10 @@ const installationSchema = mongoose.Schema(
         ref: { type: String },
         quantity: { type: Number },
         supervision: { type: Number },
+        multiprices: {
+          pro: { type: Number },
+          part: { type: Number },
+        },
       },
     ],
     administratif: [
@@ -271,6 +298,10 @@ const installationSchema = mongoose.Schema(
         },
         suppervision: {
           type: Number,
+        },
+        multiprices: {
+          pro: { type: Number },
+          part: { type: Number },
         },
       },
     ],

@@ -39,6 +39,7 @@ h2 , h1{
   padding: 10px;
   color: #fba332 !important;
   border: 1px solid #ddd;
+
 }
 
 .review button {
@@ -119,6 +120,7 @@ h2 , h1{
 
 /* Style for the form container */
 .form-container {
-  padding: 0 1rem;
+  margin-top: 2rem;
+  padding: 2rem;
   
 }

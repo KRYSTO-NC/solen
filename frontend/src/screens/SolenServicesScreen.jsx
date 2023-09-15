@@ -7,7 +7,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { FaEye } from "react-icons/fa";
 
 const SolenServicesScreen = () => {
-  const { data, isLoading, error, refetch } = useGetProductsQuery(19);
+  const { data, isLoading, error, refetch } = useGetProductsQuery(18);
   console.log(data);
   return (
     <Row>

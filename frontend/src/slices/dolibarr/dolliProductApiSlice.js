@@ -8,7 +8,7 @@ export const dolliProductApiSlice = apiSlice.injectEndpoints({
       query: (category) => {
         let params = `category=${category}`;
         return {
-          url: `${DOLIBAR_URL}/products?${params}`,
+          url: `${DOLIBAR_URL}/products?${params}&limit=100`,
           headers: {
             DOLAPIKEY: DOLIBARR_API_KEY,
           },

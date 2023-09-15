@@ -9,11 +9,12 @@ const App = () => {
   return (
     <>
       <Header />
-      <main className="py-3">
+      <main className="py-3" style={{marginBottom: "10rem"}}>
         <Container>
           <Outlet />
         </Container>
       </main>
+      <Footer />
 
       <ToastContainer />
     </>
