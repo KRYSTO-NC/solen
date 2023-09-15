@@ -13,11 +13,11 @@ const getInterventions = asyncHandler(async (req, res) => {
 // @desc Fetch single installation
 // @route GET /api/installations/:id
 // @access Private
-const getInstallationById = asyncHandler(async (req, res) => {
-    const installation = await Installation.findById(req.params.id)
+const getInterventionById = asyncHandler(async (req, res) => {
+    const intervention = await Intervention.findById(req.params.id)
 
-    if (installation) {
-        res.json(installation)
+    if (intervention) {
+        res.json(intervention)
     } else {
         res.status(404)
         throw new Error('Ressource not found')
@@ -61,6 +61,7 @@ const createNewInterventionForInstallation = asyncHandler(async (req, res) => {
 
 export {
     getInterventions,
+    getInterventionById,
     createNewInterventionForInstallation
   }
   

@@ -31,6 +31,7 @@ import SolenServicesScreen from './screens/SolenServicesScreen'
 import SimulationGuide from './screens/admin/SimulationGuide/SimulationGuide'
 import SimulationsListScreen from './screens/SimulationsListScreen'
 import MaintenanceSimulation from './screens/MaintenanceSimulations.jsx'
+import InterventionDetails from './screens/InterventionDetails'
 
 
 const routes = createBrowserRouter(
@@ -45,6 +46,7 @@ const routes = createBrowserRouter(
         <Route path="/produits-solen" element={<SolenProductScreen />} />
         <Route path="/services-solen" element={<SolenServicesScreen />} />
         <Route path="/simulations-maintenances" element={<MaintenanceSimulation/>} />
+        <Route path="/intervention/:id" element={<InterventionDetails/>} />
        
         
         <Route

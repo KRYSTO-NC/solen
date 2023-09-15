@@ -3,6 +3,7 @@ import express from 'express'
 const router = express.Router({ mergeParams: true });
 import {
     createNewInterventionForInstallation,
+  getInterventionById,
   getInterventions,
 
  
@@ -13,6 +14,7 @@ import checkObjectId from '../middleware/checkObjectId.js'
 router
 .route('/').get(protect, getInterventions)
 router.post('/', createNewInterventionForInstallation);
-
+router
+.route('/:id').get(checkObjectId, getInterventionById)
 
 export default router

@@ -10,9 +10,9 @@ export const interventionsApiSlice = apiSlice.injectEndpoints({
       providesTags: ["Intervention"],
       keepUnusedDataFor: 5,
     }),
-    getInstallationById: builder.query({
+    getInterventionById: builder.query({
       query: (id) => ({
-        url: `${INSTALLATIONS_URL}/${id}`,
+        url: `${INTERVENTIONS_URL}/${id}`,
       }),
       keepUnusedDataFor: 5,
     }),
@@ -29,6 +29,6 @@ export const interventionsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetInterventionsQuery,
-  useGetInstallationByIdQuery,
+  useGetInterventionByIdQuery,
   useCreateNewInterventionForInstallationMutation,
 } = interventionsApiSlice;

@@ -146,6 +146,7 @@ const InstallationDetailsScreen = () => {
         installationId: productId,
         newIntervention,
       });
+      refetch()
       setShowModal(false);
       toast.success("La demande d'intervention a été créée avec succès !");
       // Vous pouvez également refetch les données ou faire d'autres actions ici.
@@ -265,7 +266,7 @@ const InstallationDetailsScreen = () => {
           {installation.interventions.length > 0 ? (
             <InterventionsList interventions={installation.interventions} />
           ) : (
-            <div>Aucune interventions sur cette installations</div>
+            <h2>Aucune interventions sur cette installations</h2>
           )}
         </>
       )}

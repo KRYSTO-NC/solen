@@ -6,7 +6,7 @@ import { LinkContainer } from "react-router-bootstrap";
 const InterventionsList = ({ interventions }) => {
   return (
     <>
-    <h2>Intervention sur l'installation  ({interventions.length})</h2>
+      <h2>Intervention sur l'installation ({interventions.length})</h2>
       <table className="table table-striped table-sm">
         <thead>
           <tr>
@@ -21,9 +21,15 @@ const InterventionsList = ({ interventions }) => {
           {interventions.map((intervention) => (
             <tr key={intervention.id}>
               <td>{intervention.id}</td>
-              <td>{intervention.status}</td>
+              <td>
+                <p className={`tag ${intervention.status}`}>
+                  {intervention.status}
+                </p>
+              </td>
               <td>{new Date(intervention.dateDemande).toLocaleDateString()}</td>
-              <td>{new Date(intervention.datePrevisionnelle).toLocaleDateString()}</td>
+              <td>
+                {new Date(intervention.datePrevisionnelle).toLocaleDateString()}
+              </td>
               <td>
                 <LinkContainer to={`/intervention/${intervention.id}`}>
                   <Button variant="success" className="btn-sm mx-2">
