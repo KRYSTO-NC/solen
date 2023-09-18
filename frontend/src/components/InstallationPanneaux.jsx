@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
-import { Button, Col, Modal, Row, Form } from 'react-bootstrap';
-import ProductCard from './ProductCard';
-import { useGetProductsQuery } from '../slices/dolibarr/dolliProductApiSlice';
-import { FaPlusCircle } from 'react-icons/fa';
-import { useGetInstallationDetailsQuery, useUpdateInstallationMutation } from '../slices/installationsApiSlice';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import { Button, Col, Modal, Row, Form } from "react-bootstrap";
+import ProductCard from "./ProductCard";
+import { useGetProductsQuery } from "../slices/dolibarr/dolliProductApiSlice";
+import { FaPlusCircle } from "react-icons/fa";
+import {
+  useGetInstallationDetailsQuery,
+  useUpdateInstallationMutation,
+} from "../slices/installationsApiSlice";
+import { toast } from "react-toastify";
 
 const InstallationPanneaux = ({ panneaux, prof, installationId }) => {
-  const { data: products, isLoading: loadingProducts, error: errorProducts } = useGetProductsQuery(17);
-  const [updateInstallation] = useUpdateInstallationMutation();
   const {
+    data: products,
+    isLoading: loadingProducts,
+    error: errorProducts,
+  } = useGetProductsQuery(17);
+  const [updateInstallation] = useUpdateInstallationMutation();
+  const { isLoading, refetch, error } =
+    useGetInstallationDetailsQuery(installationId);
 
-    isLoading,
-    refetch,
-    error,
-  } = useGetInstallationDetailsQuery(installationId);
-  
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("");
   const [localPanneaux, setLocalPanneaux] = useState(panneaux);
@@ -38,7 +41,9 @@ const InstallationPanneaux = ({ panneaux, prof, installationId }) => {
   };
 
   const handleConfirm = async () => {
-    const selectedProductDetails = products?.find(product => product.id === selectedProduct);
+    const selectedProductDetails = products?.find(
+      (product) => product.id === selectedProduct
+    );
     if (selectedProductDetails) {
       const newPanel = {
         ref: selectedProduct,
@@ -55,10 +60,10 @@ const InstallationPanneaux = ({ panneaux, prof, installationId }) => {
       try {
         const result = await updateInstallation({
           installationId: installationId,
-          panneaux: [...localPanneaux, newPanel] ,
+          panneaux: [...localPanneaux, newPanel],
         });
         console.log("Update Result:", result);
-        refetch()
+        refetch();
         toast.success("panneau ajouté avec succès");
       } catch (error) {
         console.error("Update Failed:", error);
@@ -68,9 +73,11 @@ const InstallationPanneaux = ({ panneaux, prof, installationId }) => {
     }
   };
   const handleDelete = async (ref) => {
-    const updatedPanneaux = localPanneaux.filter((panneau) => panneau.ref !== ref);
+    const updatedPanneaux = localPanneaux.filter(
+      (panneau) => panneau.ref !== ref
+    );
     setLocalPanneaux(updatedPanneaux);
-  
+
     try {
       const result = await updateInstallation({
         installationId: installationId,
@@ -97,78 +104,78 @@ const InstallationPanneaux = ({ panneaux, prof, installationId }) => {
         </Col>
       </Row>
       <Modal show={showModal} onHide={handleClose}>
-  <Modal.Header closeButton>
-    <Modal.Title>Ajouter un panneau</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <Form>
-      <Form.Group controlId="productSelect">
-        <Form.Control
-          as="select"
-          value={selectedProduct}
-          onChange={handleProductChange}
-        >
-          {loadingProducts ? (
-            <option>Chargement...</option>
-          ) : errorProducts ? (
-            <option>Erreur</option>
-          ) : (
-            <>
-              <option value="">Choisir un panneau</option>
-              {products.map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.label}
-                </option>
-              ))}
-            </>
+        <Modal.Header closeButton>
+          <Modal.Title>Ajouter un panneau</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="productSelect">
+              <Form.Control
+                as="select"
+                value={selectedProduct}
+                onChange={handleProductChange}
+              >
+                {loadingProducts ? (
+                  <option>Chargement...</option>
+                ) : errorProducts ? (
+                  <option>Erreur</option>
+                ) : (
+                  <>
+                    <option value="">Choisir un panneau</option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.label}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="supervision">
+              <Form.Label>Supervision</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Entrez la supervision"
+                onChange={handleSupervisionChange} // Ajouté
+              />
+            </Form.Group>
+            <Form.Group controlId="quantity">
+              <Form.Label>Quantité</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Entrez la quantité"
+                onChange={handleQuantityChange} // Ajouté
+              />
+            </Form.Group>
+          </Form>
+          {selectedProduct && (
+            <div>
+              <p>
+                <strong>Multiprices:</strong>
+              </p>
+              <p>Tarif Pro: {selectedProduct?.multiprices?.[1] || "N/A"}</p>
+              <p>tarif Public: {selectedProduct?.multiprices?.[2] || "N/A"}</p>
+            </div>
           )}
-        </Form.Control>
-      </Form.Group>
-      <Form.Group controlId="supervision">
-        <Form.Label>Supervision</Form.Label>
-        <Form.Control 
-          type="number" 
-          placeholder="Entrez la supervision" 
-          onChange={handleSupervisionChange} // Ajouté
-        />
-      </Form.Group>
-      <Form.Group controlId="quantity">
-        <Form.Label>Quantité</Form.Label>
-        <Form.Control 
-          type="number" 
-          placeholder="Entrez la quantité" 
-          onChange={handleQuantityChange} // Ajouté
-        />
-      </Form.Group>
-    </Form>
-    {selectedProduct && (
-  <div>
-    <p>
-      <strong>Multiprices:</strong>
-    </p>
-    <p>
-      Tarif Pro: {selectedProduct?.multiprices?.[1] || "N/A"}
-    </p>
-    <p>
-      tarif Public: {selectedProduct?.multiprices?.[2] || "N/A"}
-    </p>
-  </div>
-)}
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleClose}>
-      Fermer
-    </Button>
-    <Button variant="primary" onClick={handleConfirm}> 
-      Confirmer
-    </Button>
-  </Modal.Footer>
-</Modal>
-
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger btn-sm" onClick={handleClose}>
+            Fermer
+          </Button>
+          <Button variant="success btn-sm" onClick={handleConfirm}>
+            Confirmer
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       <Row>
         {panneaux.map((support) => (
-          <ProductCard key={support.id} product={support} prof={prof} onDelete={handleDelete}/>
+          <ProductCard
+            key={support.id}
+            product={support}
+            prof={prof}
+            onDelete={handleDelete}
+          />
         ))}
       </Row>
     </div>

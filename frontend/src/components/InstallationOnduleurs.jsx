@@ -142,10 +142,10 @@ const InstallationOnduleurs = ({ onduleurs, prof, installationId }) => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="danger btn-sm" onClick={handleClose}>
             Fermer
           </Button>
-          <Button variant="primary"  onClick={handleConfirm} >
+          <Button variant="success btn-sm"  onClick={handleConfirm} >
             Confirmer
           </Button>
         </Modal.Footer>

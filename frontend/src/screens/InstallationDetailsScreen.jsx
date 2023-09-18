@@ -6,7 +6,7 @@ import {
   useUpdateInstallationMutation,
 } from "../slices/installationsApiSlice";
 import { Badge, Button, Col, Form, Modal, Row, Toast } from "react-bootstrap";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaCheck, FaTimes } from "react-icons/fa";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import Message from "../components/Message";
@@ -21,6 +21,7 @@ import InstallationAdministratif from "../components/InstallationAdministratif";
 import { useCreateNewInterventionForInstallationMutation } from "../slices/interventionSlice";
 
 import InterventionsList from "../components/InterventionsList";
+import InstallationDate from "../components/InstallationDate";
 
 const InstallationDetailsScreen = () => {
   const { id: productId } = useParams();
@@ -157,8 +158,8 @@ const InstallationDetailsScreen = () => {
 
   return (
     <>
-      <Link className="btn btn-light my-3" to={"/installations"}>
-        Retour{" "}
+      <Link className="btn  btn-danger my-3 btn-sm" style={{color:"white"}} to={"/installations"}>
+      <FaArrowAltCircleLeft/>  Retour 
       </Link>
 
       {isLoading ? (
@@ -239,6 +240,9 @@ const InstallationDetailsScreen = () => {
               </Col>
             </Row>
           </Row>
+
+          <InstallationDate installation={installation}/>
+          
           <InstallationInfos installation={installation} />
           <InstallationAdministratif installation={installation} />
           <Row className="my-4"></Row>

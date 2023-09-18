@@ -38,8 +38,9 @@ const InstallationScreen = () => {
     console.log(installation);
   return (
     <>
-      <Link className="btn btn-light my-3" to="/installations">
-        Retour
+     
+      <Link className="btn  btn-danger my-3 btn-sm" style={{color:"white"}} to={"/installations"}>
+      <FaArrowAltCircleLeft/>  Retour 
       </Link>
       <Row>
      
