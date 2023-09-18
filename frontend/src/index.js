@@ -32,6 +32,10 @@ import SimulationGuide from './screens/admin/SimulationGuide/SimulationGuide'
 import SimulationsListScreen from './screens/SimulationsListScreen'
 import MaintenanceSimulation from './screens/MaintenanceSimulations.jsx'
 import InterventionDetails from './screens/InterventionDetails'
+import InstallationDetailsEEC from './screens/InstallationDetailsEEC'
+import InstallationDetailsDimenc from './screens/InstallationDetailsDimenc'
+import InstallationDetailsConformite from './screens/InstallationDetailsConformite'
+import InstallationDetailsEnercal from './screens/InstallationDetailsEnercal'
 
 
 const routes = createBrowserRouter(
@@ -66,6 +70,22 @@ const routes = createBrowserRouter(
         <Route
           path="/installation/:id"
           element={<InstallationDetailsScreen />}
+        ></Route>
+        <Route
+          path="/details/:id/EEC"
+          element={<InstallationDetailsEEC />}
+        ></Route>
+        <Route
+          path="/details/:id/Dimenc"
+          element={<InstallationDetailsDimenc />}
+        ></Route>
+        <Route
+          path="/details/:id/Conformite"
+          element={<InstallationDetailsConformite />}
+        ></Route>
+        <Route
+          path="/details/:id/Enercal"
+          element={<InstallationDetailsEnercal />}
         ></Route>
         <Route
           path="/installation/:id/edit"

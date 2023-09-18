@@ -129,7 +129,7 @@ const installationSchema = mongoose.Schema(
       },
       remarque: {
         type: String,
-        default: 'non renseigné',
+        default: 'Aucune remarque',
       },
     },
     // Informations sur la demande Enercal
@@ -147,12 +147,12 @@ const installationSchema = mongoose.Schema(
       },
       remarque: {
         type: String,
-        default: 'non renseigné',
+        default: 'Aucune remarque',
       },
     },
     // Informations sur la demande Dimenc
     demandeDimenc: {
-      ddimencDate: {
+      dimencDate: {
         type: Date,
       },
       dateAcusee: {
@@ -168,7 +168,7 @@ const installationSchema = mongoose.Schema(
       },
       remarque: {
         type: String,
-        default: 'non renseigné',
+        default: 'Aucune remarque',
       },
     },
     // Informations sur la conformité
@@ -176,12 +176,15 @@ const installationSchema = mongoose.Schema(
       conformiteDate: {
         type: Date,
       },
+      visiteDate: {
+        type: Date,
+      },
       idTiers: {
         type: String,
       },
       remarque: {
         type: String,
-        default: 'non renseigné',
+        default: 'Aucune remarque',
       },
       status: {
         type: String,
@@ -329,46 +332,43 @@ installationSchema.virtual('maintenanceContracts', {
 })
 
 installationSchema.pre('save', async function (next) {
-  console.log('Pre-save hook triggered')
+  console.log('Pre-save hook triggered');
+
   // Calcul de la date de fin de garantie
   if (this.dateMiseEnService && this.garantie.duree) {
-    const dureeEnMs = this.garantie.duree * 365.25 * 24 * 60 * 60 * 1000
+    const dureeEnMsGarantie = this.garantie.duree * 365.25 * 24 * 60 * 60 * 1000;
     this.garantie.dateFin = new Date(
-      this.dateMiseEnService.getTime() + dureeEnMs,
-    )
-    this.garantie.isActive = true // La garantie est active
+      this.dateMiseEnService.getTime() + dureeEnMsGarantie
+    );
+    this.garantie.isActive = true;  // La garantie est active
   } else {
-    this.garantie.isActive = false // La garantie n'est pas active car la date de mise en service n'est pas définie
+    this.garantie.isActive = false;  // La garantie n'est pas active car la date de mise en service n'est pas définie
   }
 
+  // Génération du champ refference
   if (!this.refference) {
-    // Génère la référence seulement si elle n'existe pas déjà
-    // Obtenez l'année en cours
-    const currentYear = new Date().getFullYear()
-
-    // Comptez le nombre d'installations créées cette année
+    const currentYear = new Date().getFullYear();
     const count = await Installation.countDocuments({
-      refference: new RegExp(`^${currentYear}-`, 'i'),
-    })
-
-    // Générez le champ refference
-    this.refference = `${currentYear}-${count + 1}`
+      refference: new RegExp(`^${currentYear}-`, 'i')
+    });
+    this.refference = `${currentYear}-${count + 1}`;
   }
+
+  
+  // Calcul de la date de fin du délai de rétractation
   if (this.demandeDimenc.dateAcusee) {
-    // Convertir la durée en millisecondes (30 jours)
-    const dureeEnMs = 30 * 24 * 60 * 60 * 1000
-
-    // Calculer la date de fin du délai de rétractation
+   
+    const dureeEnMsDimenc = 30 * 24 * 60 * 60 * 1000;
     this.demandeDimenc.finDelaiRetraction = new Date(
-      this.demandeDimenc.dateAcusee.getTime() + dureeEnMs,
-    )
+      this.demandeDimenc.dateAcusee.getTime() + dureeEnMsDimenc
+    );
   } else {
-    // Mettre le champ à null si dateAcusee n'est pas défini
-    this.demandeDimenc.finDelaiRetraction = null
+    this.demandeDimenc.finDelaiRetraction = null;  // Mettre le champ à null si dateAcusee n'est pas défini
   }
 
-  next()
-})
+  next();
+});
+
 
 installationSchema.post('find', function (docs) {
   for (let doc of docs) {

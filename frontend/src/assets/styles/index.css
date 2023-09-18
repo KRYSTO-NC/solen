@@ -134,3 +134,20 @@ h2 , h1{
   padding: 2rem;
   
 }
+
+.card-clickable{
+  cursor: pointer;
+  
+}
+
+.remarque-box{
+  width: 100%;
+  background: #ececec;
+  padding: 1rem;
+  border-radius: 10px;
+  color: black;
+}
+
+.margin-2 {
+  margin-top: 50px;
+}

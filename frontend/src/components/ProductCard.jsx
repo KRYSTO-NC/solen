@@ -1,10 +1,11 @@
 import React from 'react'
-import { Card, Col, Row } from 'react-bootstrap'
+import { Button, Card, Col, Row } from 'react-bootstrap'
 import { useGetProductDetailsQuery } from '../slices/dolibarr/dolliProductApiSlice'
 import Loader from './Loader'
 import Message from './Message'
+import { FaTrash } from 'react-icons/fa'
 
-const ProductCard = ({ product, prof }) => {
+const ProductCard = ({ product, prof, onDelete }) => {
   const { data, isLoading, refetch, error } = useGetProductDetailsQuery(
     product.ref,
   );
@@ -63,8 +64,12 @@ const ProductCard = ({ product, prof }) => {
               </Card.Text>
             </Col>
           </Row>
+          <Button variant="danger btn-sm" onClick={() => onDelete(product.ref)}>
+       <FaTrash style={{color:"white"}}/>
+      </Button>
         </Card.Body>
       </Card>
+   
     </Col>
   );
 };

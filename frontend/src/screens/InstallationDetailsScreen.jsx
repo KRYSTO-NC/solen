@@ -247,20 +247,24 @@ const InstallationDetailsScreen = () => {
               capaciteBatterie={installation.capaciteBatterie}
               batteries={installation.batteries}
               prof={installation.prof}
+              installationId={installation.id}
             />
           )}
 
           <InstallationOnduleurs
             onduleurs={installation.onduleurs}
             prof={installation.prof}
+            installationId={installation.id}
           />
           <InstallationPanneaux
             panneaux={installation.panneaux}
             prof={installation.prof}
+            installationId={installation.id}
           />
           <InstallationSupportage
             supportages={installation.systemeDeSupportage}
             prof={installation.prof}
+            installationId={installation.id}
           />
 
           {installation.interventions.length > 0 ? (

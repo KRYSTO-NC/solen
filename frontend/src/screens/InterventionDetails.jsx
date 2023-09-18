@@ -37,4 +37,7 @@ const InterventionDetails = () => {
   );
 };
 
+
 export default InterventionDetails;
+
+
