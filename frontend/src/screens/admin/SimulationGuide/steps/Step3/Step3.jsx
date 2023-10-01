@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 const Step3 = ({ installation, onNext  })  => {
   const [selectedThirdParty, setSelectedThirdParty] = useState(null);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const {
     data: simulation,
     isLoading,
@@ -53,8 +53,11 @@ const Step3 = ({ installation, onNext  })  => {
   }, [isSuccess, onNext, installation]);
 
 
-
-
+  const filteredTiers = tiers?.filter(user => 
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  
+  );
+   
 
 
 
@@ -64,6 +67,7 @@ const Step3 = ({ installation, onNext  })  => {
   return (
     <>
       <h1>Benneficiaire</h1>
+      <SearchBar onChange={(e) => setSearchTerm(e.target.value)} />
       {isLoading || loadingTiers ? (
         <Loader />
       ) : error ? (
@@ -81,7 +85,7 @@ const Step3 = ({ installation, onNext  })  => {
                 </tr>
               </thead>
               <tbody>
-                {tiers.map((user) => (
+                {filteredTiers.map((user) => (
                   <tr key={user._id}>
                     <td>{user.name}</td>
 

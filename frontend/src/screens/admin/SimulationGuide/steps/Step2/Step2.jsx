@@ -3,17 +3,19 @@ import { useGetThirdPartiesQuery } from "../../../../../slices/dolibarr/dolliThi
 import Message from "../../../../../components/Message";
 import Loader from "../../../../../components/Loader";
 import { Button, Col, Row, Table } from "react-bootstrap";
-import SearchBar from "../../../../../components/SearchBar";
-import { FaCheck, FaEdit, FaPlusCircle, FaTimes } from "react-icons/fa";
+
+import {  FaPlusCircle } from "react-icons/fa";
 import {
   useGetInstallationDetailsQuery,
   useUpdateInstallationMutation,
 } from "../../../../../slices/installationsApiSlice";
 import { LinkContainer } from "react-router-bootstrap";
 import { toast } from "react-toastify";
+import SearchBar from "../../../../../components/SearchBar";
 
 const Step2 = ({ installation, onNext  })  => {
   const [selectedThirdParty, setSelectedThirdParty] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const {
     data: simulation,
@@ -52,12 +54,18 @@ const Step2 = ({ installation, onNext  })  => {
   }, [isSuccess, onNext, installation]);
 
 
-
-  console.log(simulation);
+  const filteredTiers = tiers?.filter(user => 
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  
+  );
+   
+  console.log(tiers);
 
   return (
     <>
       <h1>Demandeur</h1>
+      <SearchBar onChange={(e) => setSearchTerm(e.target.value)} />
+
       {isLoading || loadingTiers ? (
         <Loader />
       ) : error ? (
@@ -75,7 +83,7 @@ const Step2 = ({ installation, onNext  })  => {
                 </tr>
               </thead>
               <tbody>
-                {tiers.map((user) => (
+                {filteredTiers.map((user) => (
                   <tr key={user._id}>
                     <td>{user.name}</td>
 

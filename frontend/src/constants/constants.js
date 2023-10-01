@@ -1,7 +1,7 @@
 // export const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : '';
 export const BASE_URL = ``;
 export const DOLIBAR_URL = `https://solisdev-erp.square.nc/api/index.php`;
-export const DOLIBARR_API_KEY = `9nnE4ZQkgmLaq3H59hLL79WU15gN5sxC`
+export const DOLIBARR_API_KEY = `Xk4Gk1vF0S5bzQ772CdE4ueJP8tqPo1K`
 
 export const INSTALLATIONS_URL = `/api/installations`
 export const USERS_URL = `/api/users`

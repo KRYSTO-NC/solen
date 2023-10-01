@@ -6,7 +6,7 @@ export const dolliContactApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getContacts: builder.query({
       query: () => ({
-        url: `${DOLIBAR_URL}/contacts`,
+        url: `${DOLIBAR_URL}/contacts&limit=100`,
         headers: {
           DOLAPIKEY: DOLIBARR_API_KEY,
         },

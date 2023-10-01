@@ -10,7 +10,7 @@ export const dolliThirdPartyApiSlice = apiSlice.injectEndpoints({
     query: () => {
       // Commencez par les paramètres fixes.
       // obtiens tout les produits et service avec le tag SOLEN (19)
-      let params = `limit=10`
+      let params = `limit=10000`
 
  
       // Construisez l'URL complète avec les paramètres.
