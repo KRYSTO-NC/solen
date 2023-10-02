@@ -49,10 +49,10 @@ const InstallationListScreen = () => {
           <select className="select-filter" onChange={(e) => setSelectedStatus(e.target.value)}>
             <option value="">Tous les statuts</option>
             <option value="Projet">Projet</option>
-            <option value="Etude">Etude</option>
             <option value="En Service">En Service</option>
             <option value="Sans Suite">Sans suite</option>
           </select>
+          
         </Col>
     
       </Row>

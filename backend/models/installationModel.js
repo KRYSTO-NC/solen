@@ -366,6 +366,9 @@ installationSchema.pre('save', async function (next) {
     this.demandeDimenc.finDelaiRetraction = null;  // Mettre le champ à null si dateAcusee n'est pas défini
   }
 
+
+ 
+
   next();
 });
 

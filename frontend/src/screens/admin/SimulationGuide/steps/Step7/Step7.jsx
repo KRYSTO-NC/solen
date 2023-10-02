@@ -123,7 +123,7 @@ const Step7 = ({ installation, onNext }) => {
         {selectedProducts.map((product, index) => (
           <Row key={product.id}>
             <Col md={4}>
-              <li>Dolibarr id : <strong> {product.id}</strong></li>
+              <li>Dolibarr id : <strong> {product.ref}</strong></li>
             </Col>
             <Col md={3}>
               <Form.Label>Quantité</Form.Label>

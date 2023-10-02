@@ -6,7 +6,7 @@ import {
   useUpdateInstallationMutation,
 } from "../slices/installationsApiSlice";
 import { Badge, Button, Col, Form, Modal, Row, Toast } from "react-bootstrap";
-import { FaArrowAltCircleLeft, FaCheck, FaTimes } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaBan, FaCheck, FaEye, FaFileInvoice, FaPage4, FaPlusCircle, FaQuoteLeft, FaTimes } from "react-icons/fa";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import Message from "../components/Message";
@@ -36,6 +36,18 @@ const InstallationDetailsScreen = () => {
   const currentDate = new Date();
   const unixTimestamp = Math.floor(currentDate.getTime() / 1000);
 
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Projet":
+        return "bg-warning";
+      case "En service":
+        return "bg-success";
+      case "Sans Suite":
+        return "bg-danger";
+      default:
+        return "bg-secondary";
+    }
+  };
   const [createProposal, { isLoading: isCreating, isError, isSuccess }] =
     useCreateProposalMutation();
 
@@ -47,7 +59,20 @@ const InstallationDetailsScreen = () => {
       isSuccess: successUpdating,
     },
   ] = useUpdateInstallationMutation();
-
+  const handleClasserSansSuite = async () => {
+    try {
+      await updateInstallation({
+        installationId: installation.id,
+        status: "Sans Suite",
+      });
+      refetch();
+      toast.success(
+        'Le statut de l\'installation a été mis à jour à "Sans Suite"'
+      );
+    } catch (error) {
+      toast.error("Échec de la mise à jour du statut de l'installation");
+    }
+  };
   const handleCreateProposal = async () => {
     const batteryLines = installation.batteries.map((battery) => ({
       product_type: "1",
@@ -147,7 +172,7 @@ const InstallationDetailsScreen = () => {
         installationId: productId,
         newIntervention,
       });
-      refetch()
+      refetch();
       setShowModal(false);
       toast.success("La demande d'intervention a été créée avec succès !");
       // Vous pouvez également refetch les données ou faire d'autres actions ici.
@@ -158,8 +183,12 @@ const InstallationDetailsScreen = () => {
 
   return (
     <>
-      <Link className="btn  btn-danger my-3 btn-sm" style={{color:"white"}} to={"/installations"}>
-      <FaArrowAltCircleLeft/>  Retour 
+      <Link
+        className="btn  btn-danger my-3 btn-sm"
+        style={{ color: "white" }}
+        to={"/installations"}
+      >
+        <FaArrowAltCircleLeft /> Retour
       </Link>
 
       {isLoading ? (
@@ -173,6 +202,7 @@ const InstallationDetailsScreen = () => {
           <h2>Installation - {installation.refference}</h2>
           {installation.idPropal === null ? (
             <Button className="mx-2 btn-sm" onClick={handleCreateProposal}>
+              <FaFileInvoice style={{ marginRight: "5px" }} />
               Créer la proposition dans Dolibarr
             </Button>
           ) : (
@@ -191,18 +221,32 @@ const InstallationDetailsScreen = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
+                  <FaEye style={{ marginRight: "5px" }} />
                   Voir la proposition
                 </a>
               </Col>
               <hr />
             </Row>
           )}
+     
 
+          {installation.status !== "Sans Suite" && (
+     <Button
+     className="btn btn-sm mb-2 btn-danger"
+     style={{ color: "white" }}
+     onClick={handleClasserSansSuite}
+   >
+     <FaBan    style={{ marginRight: "5px" }} />
+     Classer sans-suite
+   </Button>
+)}
+          
           <Button
-            className="mx-2 btn-sm btn-danger"
+            className="mx-2 btn-sm btn-warning"
             style={{ color: "white" }}
             onClick={handleShowModal}
           >
+              <FaPlusCircle   style={{ marginRight: "5px" }} />
             Créer une demande d'intervention
           </Button>
           <Row className="my-4">
@@ -215,13 +259,13 @@ const InstallationDetailsScreen = () => {
               </p>
             </Col>
             <Col md={2}>
-              <Badge style={{ marginRight: "10px" }}>
+              <Badge style={{ marginRight: "5px" }} className={getStatusColor(installation.status)}>
                 {installation.status}
               </Badge>
               {installation.prof === true ? (
-                <Badge variant="success">Professionnel</Badge>
+                <Badge variant="primary">Professionnel</Badge>
               ) : (
-                <Badge variant="success">Particullier</Badge>
+                <Badge variant="secondary">Particullier</Badge>
               )}
             </Col>
 
@@ -241,8 +285,8 @@ const InstallationDetailsScreen = () => {
             </Row>
           </Row>
 
-          <InstallationDate installation={installation}/>
-          
+          <InstallationDate installation={installation} />
+
           <InstallationInfos installation={installation} />
           <InstallationAdministratif installation={installation} />
           <Row className="my-4"></Row>

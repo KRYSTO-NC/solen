@@ -12,7 +12,7 @@ import Message from "../../../../../components/Message";
 
 const Step5 = ({ installation, onNext }) => {
   const { data: simmulation } = useGetInstallationDetailsQuery(installation);
-  console.log(installation);
+
   const {
     data: products,
     isLoading: loadingProducts,
@@ -160,15 +160,15 @@ const Step5 = ({ installation, onNext }) => {
                 )}
               </Col>
 
-              <Col md={4}>
+              <Col md={6}>
             <h3>Sélection :</h3>
             <ul>
         {selectedProducts.map((product, index) => (
           <Row key={product.id}>
-            <Col md={4}>
-              <li>Dolibarr id : <strong> {product.id}</strong></li>
+            <Col md={5}>
+              <li>Refference : <strong> {product.ref}</strong></li>
             </Col>
-            <Col md={3}>
+            <Col md={2}>
               <Form.Label>Quantité</Form.Label>
               <Form.Control
                 type="number"
@@ -176,7 +176,7 @@ const Step5 = ({ installation, onNext }) => {
                 onChange={(e) => updateQuantity(product.id, Number(e.target.value), 'quantity')}
               />
             </Col>
-            <Col md={3}>
+            <Col md={2}>
               <Form.Label>Supervision</Form.Label>
               <Form.Control
                 type="number"

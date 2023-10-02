@@ -21,20 +21,19 @@ const Step6 = ({ installation, onNext }) => {
 
   const [selectedProducts, setSelectedProducts] = useState([]);
 
-
   const addProduct = (product) => {
     console.log(product);
-    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, ref: product.id, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"}  }]);
+    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, ref: product.ref, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"}  }]);
   };
-  
-  const removeProduct = (ref) => {
-    setSelectedProducts((prevProducts) => prevProducts.filter((product) => product.ref !== ref));
+
+  const removeProduct = (id) => {
+    setSelectedProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
   };
-  
-  const updateQuantity = (ref, value, field) => {
+
+  const updateQuantity = (id, value, field) => {
     setSelectedProducts((prevProducts) =>
       prevProducts.map((product) =>
-        product.ref === ref ? { ...product, [field]: value } : product
+        product.id === id ? { ...product, [field]: value } : product
       )
     );
   };
@@ -117,15 +116,15 @@ const Step6 = ({ installation, onNext }) => {
                 )}
               </Col>
 
-              <Col md={4}>
+              <Col md={6}>
             <h3>Sélection :</h3>
             <ul>
         {selectedProducts.map((product, index) => (
           <Row key={product.id}>
             <Col md={5}>
-              <li>Dolibarr id : <strong> {product.id}</strong></li>
+              <li>Réfference : <strong> {product.ref}</strong></li>
             </Col>
-            <Col md={5}>
+            <Col md={4}>
               <Form.Label>Quantité</Form.Label>
               <Form.Control
                 type="number"

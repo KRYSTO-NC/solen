@@ -27,10 +27,17 @@ const InstallationDate = ({ installation }) => {
 
   const handleConfirm = async () => {
     try {
-      const result = await updateInstallation({
+      const updateData = {
         installationId: installation.id,
         [selectedField]: selectedDate,
-      });
+      };
+ 
+      // Si le champ mis à jour est 'dateMiseEnService', changer le statut en 'En Service'
+      if (selectedField === 'dateMiseEnService' && selectedDate) {
+        updateData['status'] = 'En Service';
+      }
+  
+      const result = await updateInstallation(updateData);
       console.log("Update Result:", result);
       refetch();
     } catch (error) {
