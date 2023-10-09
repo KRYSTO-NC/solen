@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+
+
 const installationSchema = mongoose.Schema(
   {
     createdBy: {
@@ -28,6 +30,7 @@ const installationSchema = mongoose.Schema(
     typeAbonnement: {
       type: String,
       enum: ['Basse tension', 'Haute tension', 'non defini'],
+      default: 'non defini',
     },
 
     activeMaintenanceContract: {
@@ -64,8 +67,8 @@ const installationSchema = mongoose.Schema(
 
     status: {
       type: String,
-      enum: ['Template', 'Etude', 'En Service', 'Projet', 'Sans Suite'],
-      default: 'Template',
+      enum: ['Simulation', 'Etude', 'En Service', 'Projet', 'Sans Suite'],
+      default: 'Simulation',
     },
 
 
@@ -323,6 +326,7 @@ installationSchema.virtual('interventions', {
   foreignField: 'installationId',
   justOne: false,
 })
+
 // Reverse populate avec des virtuals
 installationSchema.virtual('maintenanceContracts', {
   ref: 'MaintenanceContract',
@@ -331,18 +335,57 @@ installationSchema.virtual('maintenanceContracts', {
   justOne: false,
 })
 
+installationSchema.pre('findOneAndUpdate', async function (next) {
+  const update = this.getUpdate();
+
+  console.log("Update Object:", update);
+console.log("New Warranty Duration:", update['garantie.duree']);
+
+  if (update.dateMiseEnService || update['garantie.duree']) {
+    const MS_PER_SECOND = 1000;
+    const SECONDS_PER_MINUTE = 60;
+    const MINUTES_PER_HOUR = 60;
+    const HOURS_PER_DAY = 24;
+    const DAYS_PER_YEAR = 365.25;
+
+    const dureeGarantie = update['garantie.duree'] || 1; // Utilisez la nouvelle durée de la garantie si elle est fournie
+
+    const dureeEnMsGarantie = dureeGarantie * DAYS_PER_YEAR * HOURS_PER_DAY * MINUTES_PER_HOUR * SECONDS_PER_MINUTE * MS_PER_SECOND;
+    const dateFin = new Date(new Date(update.dateMiseEnService).getTime() + dureeEnMsGarantie);
+
+    update['garantie.dateFin'] = dateFin;
+    update['garantie.isActive'] = true;
+  }
+  next();
+});
+
+
+
 installationSchema.pre('save', async function (next) {
   console.log('Pre-save hook triggered');
 
+  // Log pour afficher l'état actuel de l'objet
+  console.log("Current object state:", JSON.stringify(this, null, 2));
+  
+  // Constantes pour la conversion du temps
+  const MS_PER_SECOND = 1000;
+  const SECONDS_PER_MINUTE = 60;
+  const MINUTES_PER_HOUR = 60;
+  const HOURS_PER_DAY = 24;
+  const DAYS_PER_YEAR = 365.25;
+  
+
   // Calcul de la date de fin de garantie
   if (this.dateMiseEnService && this.garantie.duree) {
-    const dureeEnMsGarantie = this.garantie.duree * 365.25 * 24 * 60 * 60 * 1000;
-    this.garantie.dateFin = new Date(
-      this.dateMiseEnService.getTime() + dureeEnMsGarantie
-    );
-    this.garantie.isActive = true;  // La garantie est active
+    console.log("Calculating warranty end date...");
+    const dureeEnMsGarantie = this.garantie.duree * DAYS_PER_YEAR * HOURS_PER_DAY * MINUTES_PER_HOUR * SECONDS_PER_MINUTE * MS_PER_SECOND;
+    const dateFin = new Date(this.dateMiseEnService.getTime() + dureeEnMsGarantie);
+    console.log("Calculated end date:", dateFin);
+    this.garantie.dateFin = dateFin;
+    this.garantie.isActive = true; // La garantie est active
   } else {
-    this.garantie.isActive = false;  // La garantie n'est pas active car la date de mise en service n'est pas définie
+    console.log("Warranty conditions not met. Setting isActive to false.");
+    this.garantie.isActive = false; // La garantie n'est pas active
   }
 
   // Génération du champ refference
@@ -351,23 +394,49 @@ installationSchema.pre('save', async function (next) {
     const count = await Installation.countDocuments({
       refference: new RegExp(`^${currentYear}-`, 'i')
     });
+    console.log("Reference count:", count);
     this.refference = `${currentYear}-${count + 1}`;
   }
 
-  
   // Calcul de la date de fin du délai de rétractation
   if (this.demandeDimenc.dateAcusee) {
-   
     const dureeEnMsDimenc = 30 * 24 * 60 * 60 * 1000;
-    this.demandeDimenc.finDelaiRetraction = new Date(
-      this.demandeDimenc.dateAcusee.getTime() + dureeEnMsDimenc
-    );
+    const finDelaiRetraction = new Date(this.demandeDimenc.dateAcusee.getTime() + dureeEnMsDimenc);
+    console.log("Calculated end of retraction period:", finDelaiRetraction);
+    this.demandeDimenc.finDelaiRetraction = finDelaiRetraction;
   } else {
-    this.demandeDimenc.finDelaiRetraction = null;  // Mettre le champ à null si dateAcusee n'est pas défini
+    console.log("DateAcusee not defined. Setting finDelaiRetraction to null.");
+    this.demandeDimenc.finDelaiRetraction = null; // Mettre le champ à null si dateAcusee n'est pas défini
   }
 
 
- 
+  
+  // Mettre à jour le statut de la demande EEC en fonction des dates
+  if (this.demandeEEC.eecDate && this.demandeEEC.dateReponse) {
+    this.demandeEEC.status = 'Accepté';
+  } else if (this.demandeEEC.eecDate && !this.demandeEEC.dateReponse) {
+    this.demandeEEC.status = 'En Demande';
+  } else {
+    this.demandeEEC.status = 'Non Commencé';
+  }
+
+  // Mettre à jour le statut de la demande Enercal en fonction des dates
+  if (this.demandeEnercal.enercalDate && this.demandeEnercal.dateReponse) {
+    this.demandeEnercal.status = 'Accepté';
+  } else if (this.demandeEnercal.enercalDate && !this.demandeEnercal.dateReponse) {
+    this.demandeEnercal.status = 'En Demande';
+  } else {
+    this.demandeEnercal.status = 'Non Commencé';
+  }
+
+  // Mettre à jour le statut de la demande Dimenc en fonction des dates
+  if (this.demandeDimenc.dimencDate && this.demandeDimenc.dateAcusee) {
+    this.demandeDimenc.status = 'Accepté';
+  } else if (this.demandeDimenc.dimencDate && !this.demandeDimenc.dateAcusee) {
+    this.demandeDimenc.status = 'En Demande';
+  } else {
+    this.demandeDimenc.status = 'Non Commencé';
+  }
 
   next();
 });

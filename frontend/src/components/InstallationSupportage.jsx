@@ -71,9 +71,11 @@ const InstallationSupportage = ({ supportages, prof, installationId }) => {
   };
 
   const handleDelete = async (ref) => {
-    const updatedSupports = localSupportages.filter((support) => support.ref !== ref);
+    const updatedSupports = localSupportages.filter(
+      (support) => support.ref !== ref
+    );
     setLocalSupportages(updatedSupports);
-  
+
     try {
       const result = await updateInstallation({
         installationId: installationId,
@@ -110,7 +112,8 @@ const InstallationSupportage = ({ supportages, prof, installationId }) => {
                 as="select"
                 value={selectedProduct}
                 onChange={handleProductChange}
-              >systemeDeSupportage
+              >
+                systemeDeSupportage
                 {loadingProducts ? (
                   <option>Chargement...</option>
                 ) : errorProducts ? (
@@ -158,7 +161,12 @@ const InstallationSupportage = ({ supportages, prof, installationId }) => {
 
       <Row>
         {supportages.map((support) => (
-          <ProductCard key={support.id} product={support} prof={prof} onDelete={handleDelete} />
+          <ProductCard
+            key={support.id}
+            product={support}
+            prof={prof}
+            onDelete={handleDelete}
+          />
         ))}
       </Row>
     </div>

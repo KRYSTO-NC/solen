@@ -21,10 +21,11 @@ const Step4 = ({ installation, onNext }) => {
   const [isRaccordeAuReseau, setIsRaccordeAuReseau] = useState(false);
   const [typeAbonnement, setTypeAbonnement] = useState("");
   const [typeRaccordement, setTypeRaccordement] = useState("non defini");
-  const [puissance, setPuissance] = useState(0);
+  const [puissance, setPuissance] = useState(1);
   const [prof, setProf] = useState(false);
   const [amperage, setAmperage] = useState(0);
   const [numCompteurEnercal, setNumCompteurEnercal] = useState("non renseigné");
+  const [garantieDuree, setGarantieDuree] = useState(1);
   const [numClientEnercal, setNumClientEnercal] = useState("non renseigné");
   const [numCompteurEEC, setNumCompteurEEC] = useState("non renseigné");
   const [address, setAddress] = useState("non renseigné");
@@ -74,6 +75,9 @@ const Step4 = ({ installation, onNext }) => {
         installationId: installation,
         concessionaire,
         raccordReseau: isRaccordeAuReseau,
+        garantie: {
+          duree: garantieDuree,
+        },
         typeAbonnement,
         typeRaccordement,
         puissance,
@@ -117,6 +121,16 @@ const Step4 = ({ installation, onNext }) => {
                   onChange={(e) => setAddress(e.target.value)}
                 />
               </Form.Group>
+            </Col>
+            <Col>
+            <Form.Group controlId="garantie" className="my-2">
+                      <Form.Label>Durée de la garantie en Années</Form.Label>
+                      <Form.Control
+                        type="number"
+                        value={garantieDuree}
+                        onChange={(e) => setGarantieDuree(e.target.value)}
+                      />
+                    </Form.Group>
             </Col>
 
             <Row>

@@ -50,28 +50,24 @@ const Header = () => {
               {userInfo ? (
                 <>
                   <NavDropdown title="Simulation" id="basic-nav-dropdown">
-                    <LinkContainer to={"/simulations-liste"}>
-                      <Nav.Link>
-                        <FaProductHunt />
-                        Simulations
-                      </Nav.Link>
-                    </LinkContainer>
+         
                     <LinkContainer to={"/simulations-installations"}>
                       <Nav.Link>
-                        <FaProductHunt /> Créer simulation
+                        <FaSolarPanel /> Créer simulation
                       </Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to={"/simulations-maintenances"}>
-                      <Nav.Link>
-                        <FaProductHunt /> maintenance simulations
-                      </Nav.Link>
-                    </LinkContainer>
+                  
                   </NavDropdown>
 
-                  <NavDropdown title="installations" id="basic-nav-dropdown">
+                  <NavDropdown title="Installations" id="basic-nav-dropdown">
                     <LinkContainer to={"/installations"}>
                       <Nav.Link>
                         <FaSolarPanel /> Installations
+                      </Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to={"/interventions"}>
+                      <Nav.Link>
+                        <FaWrench /> Interventions
                       </Nav.Link>
                     </LinkContainer>
                    
@@ -94,7 +90,7 @@ const Header = () => {
                     <LinkContainer to={"/profile"}>
                       <NavDropdown.Item>
                         {" "}
-                        <FaUser /> Profile
+                        <FaUser /> Profil
                       </NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Item onClick={logoutHandler}>

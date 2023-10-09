@@ -32,8 +32,9 @@ const ProductCard = ({ product, prof, onDelete }) => {
               fontSize: '1rem',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
+              fontWeight:"bolder",
               textOverflow: 'ellipsis',
-              color: 'blue',
+              color: '#fba332',
             }}
           >
             {data.label}

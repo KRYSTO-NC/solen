@@ -24,7 +24,7 @@ const SolenProductScreen = () => {
     ) : (
       <>
       
-
+    
         <table className="table table-striped table-sm">
           <thead>
             <tr>
@@ -60,13 +60,13 @@ const SolenProductScreen = () => {
                           : product.stock_reel
                         : '0'}
                     </td>
-                    <td>
+                    {/* <td>
                       <LinkContainer to={`/produit/${product.id}`}>
                         <Button variant="success" className="btn-sm mx-2">
                           <FaEye />
                         </Button>
                       </LinkContainer>
-                    </td>
+                    </td> */}
                   </tr>
                 )
               } else {

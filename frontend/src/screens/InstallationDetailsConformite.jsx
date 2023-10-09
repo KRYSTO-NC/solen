@@ -17,7 +17,7 @@ const InstallationDetailsConformite = () => {
   const [newDate, setNewDate] = useState("");
   const [showVisitDateModal, setShowVisitDateModal] = useState(false);
   const [newVisitDate, setNewVisitDate] = useState("");
-
+  const [selectedStatus, setSelectedStatus] = useState("");
   const location = useLocation();
   const installationId = location.state.installation.id;
 
@@ -71,6 +71,7 @@ const InstallationDetailsConformite = () => {
     setShowDateModal(false); // Fermer le modal
   };
 
+  
   const handleUpdateVisitDate = async () => {
     try {
       const updatedData = {
@@ -92,6 +93,23 @@ const InstallationDetailsConformite = () => {
 
     setShowVisitDateModal(false); // Fermer le modal
   };
+  const handleUpdateStatus = async () => {
+    try {
+      const updatedData = {
+        installationId: installation.id,
+        conformite: {
+          ...installation.conformite,
+          status: selectedStatus, // Mettre à jour le statut
+        },
+      };
+
+      await updateInstallation(updatedData).unwrap();
+      toast.success("Statut modifié avec succès.");
+      refetch();
+    } catch (error) {
+      toast.error("Une erreur est survenue lors de la modification du statut.");
+    }
+  };
 
   return (
     <>
@@ -106,7 +124,7 @@ const InstallationDetailsConformite = () => {
       ) : (
         <>
           <Link
-            className="btn btn-light my-3"
+           className="btn  btn-danger my-3 btn-sm" style={{color:"white"}}
             to={`/installation/${installationId}`}
           >
             Retour
@@ -117,6 +135,29 @@ const InstallationDetailsConformite = () => {
             <h4 className="tag p-2" style={{ color: "black" }}>
               {installation.conformite.status}
             </h4>
+          </div>
+          <div className="mt-2 d-flex align-items-center">
+            <p className="mr-3">Modifier le statut de la demande:</p>
+            <Form.Select
+              aria-label="Statut"
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              value={selectedStatus}
+              className="mr-3"
+            >
+              <option value="">Sélectionnez le statut</option>
+
+              <option value="En Demande">Demande</option>
+              <option value="Accepté">Accepté</option>
+              <option value="Refusé">Refusé</option>
+              <option value="sous-reserve">sous-reserve</option>
+            </Form.Select>
+            <Button
+              style={{ marginLeft: "10px" }}
+              variant="btn btn-sm btn-warning"
+              onClick={handleUpdateStatus}
+            >
+              <FaEdit />
+            </Button>
           </div>
 
           <header>
@@ -145,17 +186,17 @@ const InstallationDetailsConformite = () => {
                         </p>
                       </>
                     ) : (
-                      <h4>Aucune Date</h4>
+                      <p style={{color:"red"}}>Aucune Date</p>
                     )}
                   </Col>
                 </Row>
               </Col>
               <Col
-                md={3}
-                className="d-flex justify-content-between align-items-center"
+                md={6}
+                className="d-flex justify-content-center align-items-center"
               >
                 <Row>
-                  <Col>
+                  <Col md={6}>
                     <h5>Visite: </h5>
                     <Button
                       variant="btn btn-sm btn-warning"
@@ -164,7 +205,7 @@ const InstallationDetailsConformite = () => {
                       <FaEdit />
                     </Button>
                   </Col>
-                  <Col>
+                  <Col md={6}>
                     {installation.conformite.visiteDate ? (
                       <p>
                         {new Date(
@@ -172,22 +213,13 @@ const InstallationDetailsConformite = () => {
                         ).toLocaleDateString()}
                       </p>
                     ) : (
-                      <h4>No Date</h4>
+                      <p style={{color:"red"}}>Aucune Date</p>
                     )}
                   </Col>
                 </Row>
               </Col>
 
-              {/* <Col md={6}>
-                <h4>Tier : </h4>
-                {installation.conformite.idTiers ? (
-                  <>
-                    <h4> {installation.conformite.idTiers}</h4>
-                  </>
-                ) : (
-                  <h4>Non rensegnée</h4>
-                )}
-              </Col> */}
+           
             </Row>
           </header>
 

@@ -3,7 +3,7 @@ import { FormGroup } from 'react-bootstrap'
 
 const SearchBar = ({onChange}) => {
   return (
-    <FormGroup>
+    <FormGroup style={{'marginBottom': "20px"}}>
         <input type="text" className="form-control" placeholder="Rechercher" onChange={onChange}  />
     </FormGroup>
   )

@@ -65,4 +65,6 @@ const InstallationAdministratif = ({ installation }) => {
   );
 };
 
+
+
 export default InstallationAdministratif;

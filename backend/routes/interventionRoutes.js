@@ -12,7 +12,7 @@ import { protect, admin } from '../middleware/authMiddleware.js'
 import checkObjectId from '../middleware/checkObjectId.js'
 
 router
-.route('/').get(protect, getInterventions)
+.route('/').get( getInterventions)
 router.post('/', createNewInterventionForInstallation);
 router
 .route('/:id').get(checkObjectId, getInterventionById)

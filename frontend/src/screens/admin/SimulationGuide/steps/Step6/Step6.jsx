@@ -23,7 +23,7 @@ const Step6 = ({ installation, onNext }) => {
 
   const addProduct = (product) => {
     console.log(product);
-    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, ref: product.ref, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"}  }]);
+    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, refDolli: product.label ,ref: product.id, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"}  }]);
   };
 
   const removeProduct = (id) => {
@@ -71,11 +71,8 @@ const Step6 = ({ installation, onNext }) => {
       <Form onSubmit={handleSubmit}>
        
           <>
-            <Row>
-             
-         
-            </Row>
-            {/* Tableau des produits */}
+           
+     
             <Row>
               <Col md={6}>
                 {loadingProducts ? (
@@ -118,15 +115,16 @@ const Step6 = ({ installation, onNext }) => {
 
               <Col md={6}>
             <h3>Sélection :</h3>
-            <ul>
+            <>
         {selectedProducts.map((product, index) => (
           <Row key={product.id}>
-            <Col md={5}>
-              <li>Réfference : <strong> {product.ref}</strong></li>
+            <Col md={7}>
+           <strong> {product.refDolli}</strong>
             </Col>
-            <Col md={4}>
+            <Col md={3}>
               <Form.Label>Quantité</Form.Label>
               <Form.Control
+                style={{height:"30px"}}
                 type="number"
                 value={product.quantity}
                 onChange={(e) => updateQuantity(product.id, Number(e.target.value), 'quantity')}
@@ -139,7 +137,7 @@ const Step6 = ({ installation, onNext }) => {
             </Col>
           </Row>
         ))}
-      </ul>
+      </>
           </Col>
             </Row>
           </>

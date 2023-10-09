@@ -106,7 +106,7 @@ const InstallationDetailsEnercal = () => {
       ) : (
         <>
            <Link
-            className="btn btn-light my-3"
+            className="btn  btn-danger my-3 btn-sm" style={{color:"white"}}
             to={`/installation/${installationId}`}
           >
             Retour

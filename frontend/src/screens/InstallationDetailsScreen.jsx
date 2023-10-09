@@ -6,7 +6,17 @@ import {
   useUpdateInstallationMutation,
 } from "../slices/installationsApiSlice";
 import { Badge, Button, Col, Form, Modal, Row, Toast } from "react-bootstrap";
-import { FaArrowAltCircleLeft, FaBan, FaCheck, FaEye, FaFileInvoice, FaPage4, FaPlusCircle, FaQuoteLeft, FaTimes } from "react-icons/fa";
+import {
+  FaArrowAltCircleLeft,
+  FaBan,
+  FaCheck,
+  FaEye,
+  FaFileInvoice,
+  FaPage4,
+  FaPlusCircle,
+  FaQuoteLeft,
+  FaTimes,
+} from "react-icons/fa";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import Message from "../components/Message";
@@ -138,7 +148,8 @@ const InstallationDetailsScreen = () => {
 
   // Demande intervention
   const [showModal, setShowModal] = useState(false);
-  const [dateDemande, setDateDemande] = useState("");
+  const [dateDemande, setDateDemande] = useState(new Date());
+
   const [datePrevisionnelle, setDatePrevisionnelle] = useState("");
   const [remarque, setRemarque] = useState("");
 
@@ -180,6 +191,7 @@ const InstallationDetailsScreen = () => {
       toast.error("Échec de la création de la demande d'intervention");
     }
   };
+  console.log(installation);
 
   return (
     <>
@@ -199,7 +211,7 @@ const InstallationDetailsScreen = () => {
         </Message>
       ) : (
         <>
-          <h2>Installation - {installation.refference}</h2>
+          {/* <h2>Installation - {installation.refference}</h2>
           {installation.idPropal === null ? (
             <Button className="mx-2 btn-sm" onClick={handleCreateProposal}>
               <FaFileInvoice style={{ marginRight: "5px" }} />
@@ -228,27 +240,79 @@ const InstallationDetailsScreen = () => {
               <hr />
             </Row>
           )}
-     
 
           {installation.status !== "Sans Suite" && (
-     <Button
-     className="btn btn-sm mb-2 btn-danger"
-     style={{ color: "white" }}
-     onClick={handleClasserSansSuite}
-   >
-     <FaBan    style={{ marginRight: "5px" }} />
-     Classer sans-suite
-   </Button>
-)}
-          
+            <Button
+              className="btn btn-sm mb-2 btn-danger"
+              style={{ color: "white" }}
+              onClick={handleClasserSansSuite}
+            >
+              <FaBan style={{ marginRight: "5px" }} />
+              Classer sans-suite
+            </Button>
+          )}
+
           <Button
             className="mx-2 btn-sm btn-warning"
             style={{ color: "white" }}
             onClick={handleShowModal}
           >
-              <FaPlusCircle   style={{ marginRight: "5px" }} />
+            <FaPlusCircle style={{ marginRight: "5px" }} />
             Créer une demande d'intervention
-          </Button>
+          </Button> */}
+          <Row className="align-items-center">
+  <Col md={12}>
+    <h2>Installation - {installation.refference}</h2>
+  </Col>
+</Row>
+
+{installation.idPropal === null ? (
+  <Row className="align-items-center">
+    <Col md={12}>
+      <Button className="btn btn-sm btn-primary" onClick={handleCreateProposal}>
+        <FaFileInvoice style={{ marginRight: "5px" }} />
+        Créer la proposition dans Dolibarr
+      </Button>
+    </Col>
+  </Row>
+) : (
+  <Row className="align-items-center">
+    <Col md={10}>
+      <p>
+        Identifiant de la proposition commercial Dolibarr :{" "}
+        <strong className="tag" style={{padding:'5px 10px' , color:"white" , backgroundColor:"primary"}}>{installation.idPropal} </strong>
+      </p>
+    </Col>
+    <Col md={2}>
+      <a
+        className="btn btn-primary btn-sm"
+        href={`https://solisdev-erp.square.nc/comm/propal/card.php?id=${installation.idPropal}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FaEye style={{ marginRight: "5px" }} />
+        Voir la proposition
+      </a>
+    </Col>
+  </Row>
+)}
+
+<Row className="align-items-center mt-3">
+  {installation.status !== "Sans Suite" && (
+    <Col md={4}>
+      <Button className="btn btn-sm btn-danger" onClick={handleClasserSansSuite}>
+        <FaBan style={{ marginRight: "5px" }} />
+        Classer sans-suite
+      </Button>
+    </Col>
+  )}
+  <Col md={4}>
+    <Button className="btn btn-sm btn-warning" onClick={handleShowModal}>
+      <FaPlusCircle style={{ marginRight: "5px" }} />
+      Créer une demande d'intervention
+    </Button>
+  </Col>
+</Row>
           <Row className="my-4">
             <Col md={10}>
               <h5>Installation : {installation.refference}</h5>
@@ -259,7 +323,10 @@ const InstallationDetailsScreen = () => {
               </p>
             </Col>
             <Col md={2}>
-              <Badge style={{ marginRight: "5px" }} className={getStatusColor(installation.status)}>
+              <Badge
+                style={{ marginRight: "5px" }}
+                className={getStatusColor(installation.status)}
+              >
                 {installation.status}
               </Badge>
               {installation.prof === true ? (
@@ -291,29 +358,37 @@ const InstallationDetailsScreen = () => {
           <InstallationAdministratif installation={installation} />
           <Row className="my-4"></Row>
           {installation.stockage && (
-            <InstallationStockage
-              capaciteBatterie={installation.capaciteBatterie}
-              batteries={installation.batteries}
-              prof={installation.prof}
-              installationId={installation.id}
-            />
-          )}
+  <InstallationStockage
+    capaciteBatterie={installation.capaciteBatterie}
+    batteries={installation.batteries}
+    prof={installation.prof}
+    installationId={installation.id}
+  />
+)}
 
-          <InstallationOnduleurs
-            onduleurs={installation.onduleurs}
-            prof={installation.prof}
-            installationId={installation.id}
-          />
-          <InstallationPanneaux
-            panneaux={installation.panneaux}
-            prof={installation.prof}
-            installationId={installation.id}
-          />
-          <InstallationSupportage
-            supportages={installation.systemeDeSupportage}
-            prof={installation.prof}
-            installationId={installation.id}
-          />
+{installation.onduleurs && (
+  <InstallationOnduleurs
+    onduleurs={installation.onduleurs}
+    prof={installation.prof}
+    installationId={installation.id}
+  />
+)}
+
+{installation.panneaux && (
+  <InstallationPanneaux
+    panneaux={installation.panneaux}
+    prof={installation.prof}
+    installationId={installation.id}
+  />
+)}
+
+{installation.systemeDeSupportage && (
+  <InstallationSupportage
+    supportages={installation.systemeDeSupportage}
+    prof={installation.prof}
+    installationId={installation.id}
+  />
+)}
 
           {installation.interventions.length > 0 ? (
             <InterventionsList interventions={installation.interventions} />
@@ -328,16 +403,17 @@ const InstallationDetailsScreen = () => {
           <Modal.Title>Créer une nouvelle demande d'intervention</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleCreateIntervention}>
-            <Form.Group controlId="dateDemande">
-              <Form.Label>Date de la demande</Form.Label>
+         <Form onSubmit={handleCreateIntervention}>
+             {/* <Form.Group controlId="dateDemande">
+              <Form.Label>Demande</Form.Label>
               <Form.Control
                 type="date"
                 placeholder="Entrez la date de la demande"
                 value={dateDemande}
                 onChange={handleDateDemandeChange}
               />
-            </Form.Group>
+            </Form.Group> */}
+            <p>Date de la demande : <span style={{fontWeight:"bold"}}> {new Date(dateDemande).toLocaleDateString()}</span> </p>
 
             <Form.Group controlId="datePrevisionnelle">
               <Form.Label>Date prévisionnelle de l'intervention</Form.Label>
@@ -360,8 +436,8 @@ const InstallationDetailsScreen = () => {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
-              Créer
+            <Button className="btn-sm" style={{marginTop:"10px"}} variant="primary" type="submit">
+              Créer la demande
             </Button>
           </Form>
         </Modal.Body>

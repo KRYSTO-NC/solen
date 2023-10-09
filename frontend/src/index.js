@@ -36,6 +36,7 @@ import InstallationDetailsEEC from './screens/InstallationDetailsEEC'
 import InstallationDetailsDimenc from './screens/InstallationDetailsDimenc'
 import InstallationDetailsConformite from './screens/InstallationDetailsConformite'
 import InstallationDetailsEnercal from './screens/InstallationDetailsEnercal'
+import Dashboard from './screens/Dashboard'
 
 
 const routes = createBrowserRouter(
@@ -51,6 +52,7 @@ const routes = createBrowserRouter(
         <Route path="/services-solen" element={<SolenServicesScreen />} />
         <Route path="/simulations-maintenances" element={<MaintenanceSimulation/>} />
         <Route path="/intervention/:id" element={<InterventionDetails/>} />
+        <Route path="/dashboard" element={<Dashboard/>} />
        
         
         <Route

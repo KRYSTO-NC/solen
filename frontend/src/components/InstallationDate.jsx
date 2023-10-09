@@ -55,13 +55,13 @@ const InstallationDate = ({ installation }) => {
               <Card style={{ height: "130px" }}>
                 <Card.Body>
                   <Card.Title style={{ fontSize: "15px", marginTop: "1.8rem" }}>
-                    Date création
+                    Créer le
                   </Card.Title>
                   <Card.Text>
                     {installation.createdAt ? (
                       new Date(installation.createdAt).toLocaleDateString()
                     ) : (
-                      <p>Non renseignée</p>
+                      <p style={{color:"red"}}>Non renseignée</p>
                     )}
                   </Card.Text>
                 </Card.Body>
@@ -71,13 +71,13 @@ const InstallationDate = ({ installation }) => {
               <Card style={{ height: "130px" }}>
                 <Card.Body>
                   <Card.Title style={{ fontSize: "15px", marginTop: "1.8rem" }}>
-                    Dernière modification
+                    Modifié le
                   </Card.Title>
                   <Card.Text>
                     {installation.createdAt ? (
                       new Date(installation.createdAt).toLocaleDateString()
                     ) : (
-                      <p>Non renseignée</p>
+                      <p style={{color:"red"}}>Non renseignée</p>
                     )}
                   </Card.Text>
                 </Card.Body>
@@ -89,13 +89,13 @@ const InstallationDate = ({ installation }) => {
               <Card style={{ height: "130px" }}>
                 <Card.Body>
                   <Card.Title style={{ fontSize: "15px", marginTop: "1.8rem" }}>
-                    {field === 'datePrevisionelPose' ? 'Date prév. de pose' : field === 'datePose' ? 'Date de pose' : field === 'datePrevisionelMiseEnService' ? 'Date prév mise en service' : 'Date mise en service' }
+                    {field === 'datePrevisionelPose' ? 'Pose prévu le' : field === 'datePose' ? 'Pose' : field === 'datePrevisionelMiseEnService' ? 'Prév. mise en service' : 'Mise en service' }
                   </Card.Title>
                   <Card.Text>
                     {installation[field] ? (
                       new Date(installation[field]).toLocaleDateString()
                     ) : (
-                      <p>Non renseignée</p>
+                      <p style={{color:"red"}}>Non renseignée</p>
                     )}
                   </Card.Text>
                   <Button

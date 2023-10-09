@@ -12,7 +12,7 @@ import {
 import { LinkContainer } from "react-router-bootstrap";
 import { toast } from "react-toastify";
 
-const Step3 = ({ installation, onNext  })  => {
+const Step3 = ({ installation, onNext }) => {
   const [selectedThirdParty, setSelectedThirdParty] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const {
@@ -31,20 +31,21 @@ const Step3 = ({ installation, onNext  })  => {
     error: errorTiers,
   } = useGetThirdPartiesQuery();
 
-
   const handleValidate = async () => {
     try {
       await updateInstallation({
         installationId: installation,
-        benneficiaire: selectedThirdParty.id, 
+        benneficiaire: selectedThirdParty.id,
       });
       toast.success("Bennéficiaire ajouté avec succées.");
     } catch (error) {
-      toast.error("Une erreur est survenue lors de la validation de l'installation.");
+      toast.error(
+        "Une erreur est survenue lors de la validation de l'installation."
+      );
       console.error("Une erreur est survenue:", error);
     }
   };
-  
+
   // Ajout d'un useEffect pour gérer la réussite de la mise à jour
   useEffect(() => {
     if (isSuccess) {
@@ -52,21 +53,35 @@ const Step3 = ({ installation, onNext  })  => {
     }
   }, [isSuccess, onNext, installation]);
 
-
-  const filteredTiers = tiers?.filter(user => 
+  const filteredTiers = tiers?.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  
   );
-   
-
-
-
 
   console.log(simulation);
 
   return (
     <>
-      <h1>Benneficiaire</h1>
+      <h1>Bénéficiaire</h1>
+      <Row style={{ marginBottom: "20px" }}>
+        <Col md={10}>
+          <h5>
+            {" "}
+            Avant de continuer, assurez-vous que le client est déjà enregistré
+            dans Dolibarr.{" "}
+          </h5>
+        </Col>
+
+        <Col md={2}>
+          <a
+            className="btn btn-primary btn-sm my-3"
+            href={`https://solisdev-erp.square.nc/societe/card.php?leftmenu=customers&action=create&type=c`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Créer le client
+          </a>
+        </Col>
+      </Row>
       <SearchBar onChange={(e) => setSearchTerm(e.target.value)} />
       {isLoading || loadingTiers ? (
         <Loader />

@@ -4,7 +4,7 @@ import Message from "../../../../../components/Message";
 import Loader from "../../../../../components/Loader";
 import { Button, Col, Row, Table } from "react-bootstrap";
 
-import {  FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle } from "react-icons/fa";
 import {
   useGetInstallationDetailsQuery,
   useUpdateInstallationMutation,
@@ -12,10 +12,13 @@ import {
 import { LinkContainer } from "react-router-bootstrap";
 import { toast } from "react-toastify";
 import SearchBar from "../../../../../components/SearchBar";
+import { useNavigate } from "react-router-dom";
 
-const Step2 = ({ installation, onNext  })  => {
+const Step2 = ({ installation, onNext }) => {
   const [selectedThirdParty, setSelectedThirdParty] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const navigate = useNavigate();
 
   const {
     data: simulation,
@@ -37,15 +40,16 @@ const Step2 = ({ installation, onNext  })  => {
     try {
       await updateInstallation({
         installationId: installation,
-        demandeur: selectedThirdParty.id,  // Utilisez _id si c'est le champ de MongoDB
+        demandeur: selectedThirdParty.id, // Utilisez _id si c'est le champ de MongoDB
       });
       toast.success("Demandeur ajouté avec succées.");
     } catch (error) {
-      toast.error("Une erreur est survenue lors de la validation de l'installation.");
+      toast.error(
+        "Une erreur est survenue lors de la validation de l'installation."
+      );
       console.error("Une erreur est survenue:", error);
     }
   };
-
 
   useEffect(() => {
     if (isSuccess) {
@@ -53,17 +57,36 @@ const Step2 = ({ installation, onNext  })  => {
     }
   }, [isSuccess, onNext, installation]);
 
-
-  const filteredTiers = tiers?.filter(user => 
+  const filteredTiers = tiers?.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  
   );
-   
+
   console.log(tiers);
+
 
   return (
     <>
       <h1>Demandeur</h1>
+      <Row style={{ marginBottom: "20px" }}>
+  <Col md={10}>
+    <h5> Avant de continuer, assurez-vous que le client est déjà enregistré dans Dolibarr. </h5>
+  </Col>
+
+
+    <Col md={2}>
+                <a
+                  className="btn btn-primary btn-sm my-3"
+                  href={`https://solisdev-erp.square.nc/societe/card.php?leftmenu=customers&action=create&type=c`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                 
+                 Créer le client
+                </a>
+            
+  </Col>
+</Row>
+
       <SearchBar onChange={(e) => setSearchTerm(e.target.value)} />
 
       {isLoading || loadingTiers ? (

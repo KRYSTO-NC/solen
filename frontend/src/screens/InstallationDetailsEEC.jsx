@@ -17,7 +17,7 @@ const InstallationDetailsEEC = () => {
   const [newDate, setNewDate] = useState("");
   const [showVisitDateModal, setShowVisitDateModal] = useState(false);
   const [newVisitDate, setNewVisitDate] = useState("");
-
+  const [selectedStatus, setSelectedStatus] = useState("");
   const location = useLocation();
   const installationId = location.state.installation.id;
 
@@ -49,6 +49,23 @@ const InstallationDetailsEEC = () => {
     setShowModal(false);
   };
 
+  const handleUpdateStatus = async () => {
+    try {
+      const updatedData = {
+        installationId: installation.id,
+        demandeEEC: {
+          ...installation.demandeEEC,
+          status: selectedStatus, // Mettre à jour le statut
+        },
+      };
+
+      await updateInstallation(updatedData).unwrap();
+      toast.success("Statut modifié avec succès.");
+      refetch();
+    } catch (error) {
+      toast.error("Une erreur est survenue lors de la modification du statut.");
+    }
+  };
   const handleUpdateDate = async () => {
     try {
       const updatedData = {
@@ -75,7 +92,7 @@ const InstallationDetailsEEC = () => {
     try {
       const updatedData = {
         installationId: installation.id,
-       demandeEEC: {
+        demandeEEC: {
           ...installation.demandeEEC,
           dateReponse: newVisitDate, // Mettre à jour la date de la visite
         },
@@ -105,8 +122,8 @@ const InstallationDetailsEEC = () => {
         </Message>
       ) : (
         <>
-           <Link
-            className="btn btn-light my-3"
+          <Link
+          className="btn  btn-danger my-3 btn-sm" style={{color:"white"}}
             to={`/installation/${installationId}`}
           >
             Retour
@@ -118,66 +135,63 @@ const InstallationDetailsEEC = () => {
             </h4>
           </div>
 
-          <header>
-            <Row>
-              <Col
-                md={3}
-                className="d-flex justify-content-between align-items-center"
-              >
-                <Row>
-                  <Col>
-                    <h5>Demande:</h5>
-                    <Button
-                      variant="btn btn-sm btn-warning"
-                      onClick={() => setShowDateModal(true)}
-                    >
-                      <FaEdit />
-                    </Button>
-                  </Col>
-                  <Col>
-                    {installation.demandeEEC.eecDate ? (
-                      <>
-                        <p>
-                          {new Date(
-                            installation.demandeEEC.eecDate
-                          ).toLocaleDateString()}
-                        </p>
-                      </>
-                    ) : (
-                      <h4>Aucune Date</h4>
-                    )}
-                  </Col>
-                </Row>
-              </Col>
-              <Col
-                md={3}
-                className="d-flex justify-content-between align-items-center"
-              >
-                <Row>
-                  <Col>
-                <h5>Reponse: </h5>
-                <Button
-                  variant="btn btn-sm btn-warning"
-                  onClick={() => setShowVisitDateModal(true)}
-                >
-                  <FaEdit />
-                </Button>
-                </Col>
-                <Col>
-                {installation.demandeEEC.dateReponse ? (
-                  <p>
-                    {new Date(
-                      installation.demandeEEC.dateReponse
-                    ).toLocaleDateString()}
-                  </p>
-                ) : (
-                  <h4>Aucune Date</h4>
-                )}
-                </Col>
-                </Row>
-              </Col>
-            </Row>
-          </header>
+          <div className="mt-2 d-flex align-items-center">
+            <p className="mr-3">Modifier le statut de la demande:</p>
+            <Form.Select
+              aria-label="Statut"
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              value={selectedStatus}
+              className="mr-3"
+            >
+              <option value="">Sélectionnez le statut</option>
+
+              <option value="En Demande">Demande</option>
+              <option value="Accepté">Accepté</option>
+              <option value="Refusé">Refusé</option>
+              <option value="sous-reserve">sous-reserve</option>
+            </Form.Select>
+            <Button
+              style={{ marginLeft: "10px" }}
+              variant="btn btn-sm btn-warning"
+              onClick={handleUpdateStatus}
+            >
+              <FaEdit />
+            </Button>
+          </div>
+
+          <Row className="mb-4">
+  {/* Date de la demande */}
+  <Col md={6}>
+    <div className="d-flex align-items-center">
+      <h5 className="mr-3">Demande:</h5>
+      {installation.demandeEEC.eecDate ? (
+        <p  style={{marginLeft:"10px"}} className="mr-3"> {new Date(installation.demandeEEC.eecDate).toLocaleDateString()}</p>
+      ) : (
+        <p className="mr-3">Aucune Date</p>
+      )}
+      <Button  style={{marginLeft:"10px"}} variant="btn btn-sm btn-warning" onClick={() => setShowDateModal(true)}>
+        <FaEdit />
+      </Button>
+    </div>
+  </Col>
+
+  {/* Date et statut de la réponse */}
+  <Col md={6}>
+    <div className="d-flex align-items-center">
+      <h5 className="mr-3">Réponse:</h5>
+      {installation.demandeEEC.dateReponse ? (
+        <p style={{marginLeft:"10px"}} className="mr-3">{new Date(installation.demandeEEC.dateReponse).toLocaleDateString()}</p>
+      ) : (
+        <p className="mr-3">Aucune Date</p>
+      )}
+      <Button style={{marginLeft:"10px"}} variant="btn btn-sm btn-warning" onClick={() => setShowVisitDateModal(true)}>
+        <FaEdit />
+      </Button>
+    </div>
+   
+  </Col>
+</Row>
+
 
           <section className="margin-2">
             <div className="d-flex justify-content-between align-items-center">

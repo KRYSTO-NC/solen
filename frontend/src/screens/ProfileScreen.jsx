@@ -51,7 +51,7 @@ const ProfileScreen = () => {
   return (
     <Row>
       <Col md={6} className='my-5'>
-        <h2>Votre profile</h2>
+        <h2>Votre profil</h2>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name" className="my-2">
             <Form.Label>Nom</Form.Label>

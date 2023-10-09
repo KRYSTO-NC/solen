@@ -2,14 +2,13 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import colors from "colors";
 import users from "./data/users.js";
-import options from "./data/options.js";
-import installations from "./data/installations.js";
+
 import User from "./models/userModel.js";
 import Installation from "./models/installationModel.js";
 import Intervention from "./models/interventionModel.js";
 import MaintenanceContract from "./models/maintenanceContractModel.js";
 import TypeInstallation from "./models/typeInstallationModel.js";
-import Option from "./models/optionModel.js";
+
 
 
 

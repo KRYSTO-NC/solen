@@ -26,7 +26,7 @@ const Step5 = ({ installation, onNext }) => {
 
   const addProduct = (product) => {
     console.log(product);
-    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, ref: product.id, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"} }]);
+    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, refDolli: product.label , ref: product.id, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"} }]);
   };
 
   const removeProduct = (ref) => {
@@ -162,15 +162,16 @@ const Step5 = ({ installation, onNext }) => {
 
               <Col md={6}>
             <h3>Sélection :</h3>
-            <ul>
+            <>
         {selectedProducts.map((product, index) => (
           <Row key={product.id}>
             <Col md={5}>
-              <li>Refference : <strong> {product.ref}</strong></li>
+             <strong> {product.refDolli}</strong>
             </Col>
             <Col md={2}>
               <Form.Label>Quantité</Form.Label>
               <Form.Control
+              style={{height:"30px"}}
                 type="number"
                 value={product.quantity}
                 onChange={(e) => updateQuantity(product.id, Number(e.target.value), 'quantity')}
@@ -179,6 +180,7 @@ const Step5 = ({ installation, onNext }) => {
             <Col md={2}>
               <Form.Label>Supervision</Form.Label>
               <Form.Control
+              style={{height:"30px"}}
                 type="number"
                 value={product.supervision}
                 onChange={(e) => updateQuantity(product.id, Number(e.target.value), 'supervision')}
@@ -191,7 +193,7 @@ const Step5 = ({ installation, onNext }) => {
             </Col>
           </Row>
         ))}
-      </ul>
+      </>
           </Col>
             </Row>
           </>

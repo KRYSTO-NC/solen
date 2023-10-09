@@ -22,7 +22,7 @@ const LoginScreen = () => {
 
   const { search } = useLocation()
   const sp = new URLSearchParams(search)
-  const redirect = sp.get('redirect') || '/installations' // redirect to home page if no redirect query param
+  const redirect = sp.get('redirect') || '/dashboard' // redirect to home page if no redirect query param
 
   useEffect(() => {
     if (userInfo) {
@@ -53,7 +53,7 @@ const LoginScreen = () => {
     </Col>
     <Col md={6}>
       <div className="form-container">
-        <h1>Connection</h1>
+        <h1>Connexion</h1>
           <Form onSubmit={submitHandler}>
             <Form.Group className="my-3" controlId="email">
               <Form.Label>Votre adresse email</Form.Label>

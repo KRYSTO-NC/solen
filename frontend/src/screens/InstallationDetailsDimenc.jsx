@@ -17,6 +17,7 @@ const InstallationDetailsDimenc = () => {
   const [newDate, setNewDate] = useState("");
   const [showVisitDateModal, setShowVisitDateModal] = useState(false);
   const [newVisitDate, setNewVisitDate] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   const location = useLocation();
   const installationId = location.state.installation.id;
@@ -48,7 +49,23 @@ const InstallationDetailsDimenc = () => {
 
     setShowModal(false);
   };
+  const handleUpdateStatus = async () => {
+    try {
+      const updatedData = {
+        installationId: installation.id,
+        demandeDimenc: {
+          ...installation.demandeDimenc,
+          status: selectedStatus, // Mettre à jour le statut
+        },
+      };
 
+      await updateInstallation(updatedData).unwrap();
+      toast.success("Statut modifié avec succès.");
+      refetch();
+    } catch (error) {
+      toast.error("Une erreur est survenue lors de la modification du statut.");
+    }
+  };
   const handleUpdateDate = async () => {
     try {
       const updatedData = {
@@ -105,8 +122,8 @@ const InstallationDetailsDimenc = () => {
         </Message>
       ) : (
         <>
-           <Link
-            className="btn btn-light my-3"
+          <Link
+          className="btn  btn-danger my-3 btn-sm" style={{color:"white"}}
             to={`/installation/${installationId}`}
           >
             Retour
@@ -116,6 +133,29 @@ const InstallationDetailsDimenc = () => {
             <h4 className="tag p-2" style={{ color: "black" }}>
               {installation.demandeDimenc.status}
             </h4>
+          </div>
+          <div className="mt-2 d-flex align-items-center">
+            <p className="mr-3">Modifier le statut de la demande:</p>
+            <Form.Select
+              aria-label="Statut"
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              value={selectedStatus}
+              className="mr-3"
+            >
+              <option value="">Sélectionnez le statut</option>
+
+              <option value="En Demande">Demande</option>
+              <option value="Accepté">Accepté</option>
+              <option value="Refusé">Refusé</option>
+              <option value="sous-reserve">sous-reserve</option>
+            </Form.Select>
+            <Button
+              style={{ marginLeft: "10px" }}
+              variant="btn btn-sm btn-warning"
+              onClick={handleUpdateStatus}
+            >
+              <FaEdit />
+            </Button>
           </div>
 
           <header>
@@ -144,18 +184,19 @@ const InstallationDetailsDimenc = () => {
                         </p>
                       </>
                     ) : (
-                      <h4>Aucune Date</h4>
+                      <p style={{color: "red"}}>Aucune Date</p>
                     )}
                   </Col>
                 </Row>
               </Col>
+
               <Col
-                md={3}
+                md={6}
                 className="d-flex justify-content-between align-items-center"
               >
                 <Row>
                   <Col>
-                    <h5>Accusée: </h5>
+                    <h5>accusé :</h5>
                     <Button
                       variant="btn btn-sm btn-warning"
                       onClick={() => setShowVisitDateModal(true)}
@@ -171,36 +212,31 @@ const InstallationDetailsDimenc = () => {
                         ).toLocaleDateString()}
                       </p>
                     ) : (
-                      <h4>Aucune Date</h4>
+                      <p style={{color: "red"}}>Aucune Date</p>
                     )}
                   </Col>
                 </Row>
-                
-                
-             
               </Col>
             </Row>
           </header>
 
           <div className="margin-2">
-          {installation.demandeDimenc.dateAcusee ? (
-                    <>
-                      <h4>Fin du delai de retractation: </h4>
-                    <p>
-                      {new Date(
-                          new Date(
-                              installation.demandeDimenc.dateAcusee
-                              ).setDate(
-                                  new Date(
-                                      installation.demandeDimenc.dateAcusee
-                                      ).getDate() + 30
-                                      )
-                                      ).toLocaleDateString()}
-                    </p>
-                  </>
-                  ) : (
-                    <h4>Aucune Date</h4>
-                  )}
+            {installation.demandeDimenc.dateAcusee ? (
+              <>
+                <h4>Fin du delai de retractation: </h4>
+                <p>
+                  {new Date(
+                    new Date(installation.demandeDimenc.dateAcusee).setDate(
+                      new Date(
+                        installation.demandeDimenc.dateAcusee
+                      ).getDate() + 30
+                    )
+                  ).toLocaleDateString()}
+                </p>
+              </>
+            ) : (
+             ""
+            )}
           </div>
 
           <section className="margin-2">

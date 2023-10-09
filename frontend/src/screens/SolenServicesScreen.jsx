@@ -8,7 +8,7 @@ import { FaEye } from "react-icons/fa";
 
 const SolenServicesScreen = () => {
   const { data, isLoading, error, refetch } = useGetProductsQuery(18);
-  console.log(data);
+
   return (
     <Row>
       <h1>Services Solen</h1>

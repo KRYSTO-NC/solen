@@ -25,7 +25,7 @@ const Step8 = ({ installation, onNext }) => {
     console.log(product);
     setSelectedProducts((prevProducts) => [
       ...prevProducts,
-      { id: product.id, ref: product.id, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"}  },
+      { id: product.id, ref: product.id, refDolli:product.label, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"}  },
     ]);
   };
 
@@ -118,46 +118,50 @@ const Step8 = ({ installation, onNext }) => {
 
             <Col md={4}>
               <h3>Sélection :</h3>
-              <ul>
+              <>
                 {selectedProducts.map((product, index) => (
-                  <Row key={product.id}>
-                    <Col md={4}>
-                      <li>
-                        Dolibarr id : <strong> {product.id}</strong>
-                      </li>
+                  <>
+                  < hr/>
+                  <Row key={product.id} style={{marginBottom:"20px"}}>
+                    <Col md={5}>
+                      
+                       <strong> {product.refDolli}</strong>
+                   
                     </Col>
                     <Col md={3}>
                       <Form.Label>Quantité</Form.Label>
                       <Form.Control
                         type="number"
+                        style={{height:"30px"}}
                         value={product.quantity}
                         onChange={(e) =>
                           updateQuantity(
                             product.id,
                             Number(e.target.value),
                             "quantity"
-                          )
-                        }
-                      />
+                            )
+                          }
+                          />
                     </Col>
 
                   
-                    <Col md={2}>
+                    <Col md={1}>
                       <Button
                         variant="danger"
                         className="btn-sm"
                         onClick={() => removeProduct(product.id)}
-                      >
+                        >
                         <FaTrash />
                       </Button>
                     </Col>
                   </Row>
+                </>
                 ))}
-              </ul>
+              </>
             </Col>
           </Row>
         </>
-
+        
         <Button type="submit" variant="primary" className="mb-3">
           Suivant
         </Button>

@@ -24,7 +24,7 @@ const Step7 = ({ installation, onNext }) => {
 
   const addProduct = (product) => {
     console.log(product);
-    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, ref: product.id, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"}  }]);
+    setSelectedProducts((prevProducts) => [...prevProducts, { id: product.id, refDolli:product.label, ref: product.id, quantity: 1, supervision: 0 , multiprices : { part : product.multiprices?.["1"] ?? "0" , pro: product.multiprices?.["2"] ?? "0"}  }]);
   };
   
   const removeProduct = (ref) => {
@@ -119,15 +119,18 @@ const Step7 = ({ installation, onNext }) => {
 
               <Col md={4}>
             <h3>Sélection :</h3>
-            <ul>
+            <>
         {selectedProducts.map((product, index) => (
+          <>
+              <hr/>
           <Row key={product.id}>
-            <Col md={4}>
-              <li>Dolibarr id : <strong> {product.ref}</strong></li>
+            <Col md={5}>
+           <strong> {product.refDolli}</strong>
             </Col>
             <Col md={3}>
               <Form.Label>Quantité</Form.Label>
               <Form.Control
+                style={{height:"30px"}}
                 type="number"
                 value={product.quantity}
                 onChange={(e) => updateQuantity(product.id, Number(e.target.value), 'quantity')}
@@ -137,19 +140,21 @@ const Step7 = ({ installation, onNext }) => {
             <Col md={3}>
               <Form.Label>Supervision</Form.Label>
               <Form.Control
-                type="number"
+                     style={{height:"30px"}}
+                     type="number"
                 value={product.supervision}
                 onChange={(e) => updateQuantity(product.id, Number(e.target.value), 'supervision')}
-              />
+                />
             </Col>
-            <Col md={2}>
+            <Col md={1}>
               <Button variant="danger" className="btn-sm" onClick={() => removeProduct(product.id)}>
                 <FaTrash />
               </Button>
             </Col>
           </Row>
+        </>
         ))}
-      </ul>
+      </>
           </Col>
             </Row>
           </>

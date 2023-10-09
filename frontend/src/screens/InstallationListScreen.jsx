@@ -1,6 +1,6 @@
 import { LinkContainer } from "react-router-bootstrap";
-import { Table, Button, Row, Col } from "react-bootstrap";
-import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { Table, Button, Row, Col, Badge } from "react-bootstrap";
+import { FaEdit, FaExclamation, FaEye, FaTrash } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -19,8 +19,13 @@ const InstallationListScreen = () => {
     pageNumber,
   });
 
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const hasDelayedIntervention = (interventions) => {
+    return interventions.some(
+      (intervention) => intervention.status === "Retard"
+    );
+  };
 
+  const [selectedStatus, setSelectedStatus] = useState("En Service");
 
   const [deleteInstallation, { isLoading: loadingDelete }] =
     useDeleteInstallationMutation();
@@ -37,24 +42,29 @@ const InstallationListScreen = () => {
     }
   };
 
-
   return (
     <>
       <Row className="align-items-center">
         <Col>
-        <h2 >Installations</h2>
-      
+          <h2>Installations</h2>
         </Col>
         <Col className="text-end">
-          <select className="select-filter" onChange={(e) => setSelectedStatus(e.target.value)}>
-            <option value="">Tous les statuts</option>
+          <p>
+            Initialement, seules les installations <strong>en service</strong>  apparaissent dans
+            la liste. Pour voir des installations avec d'autres états, utilisez
+            le menu déroulant ci-dessous.
+          </p>
+
+          <select
+            className="select-filter"
+            onChange={(e) => setSelectedStatus(e.target.value)}
+          >
+            <option value="En Service">En service</option>
             <option value="Projet">Projet</option>
-            <option value="En Service">En Service</option>
+            <option value="Simulation">Simulation</option>
             <option value="Sans Suite">Sans suite</option>
           </select>
-          
         </Col>
-    
       </Row>
       {loadingDelete && <Loader />}
       {isLoading ? (
@@ -73,6 +83,7 @@ const InstallationListScreen = () => {
                 <th></th>
               </tr>
             </thead>
+
             <tbody>
               {data.installations
                 ?.filter(
@@ -82,20 +93,25 @@ const InstallationListScreen = () => {
                 .map((installation) => (
                   <tr key={installation._id}>
                     <td>{installation.refference}</td>
-                    <td>{installation.status}</td>
+                    <td>
+                      {installation.status}
+                      {hasDelayedIntervention(installation.interventions) && (
+                        <span style={{ marginLeft: "10px" }}>
+                          <Badge
+                            style={{ color: "white", backgroundColor: "blue" }}
+                          >
+                            <FaExclamation /> Retard sur intervention{" "}
+                            <FaExclamation />
+                          </Badge>
+                        </span>
+                      )}
+                    </td>
                     <td>{installation.concessionaire}</td>
                     <td>{installation.address}</td>
                     <td>
                       <LinkContainer to={`/installation/${installation._id}`}>
                         <Button variant="success" className="btn-sm mx-2">
                           <FaEye />
-                        </Button>
-                      </LinkContainer>
-                      <LinkContainer
-                        to={`/installation/${installation._id}/edit`}
-                      >
-                        <Button variant="warning" className="btn-sm mx-2">
-                          <FaEdit />
                         </Button>
                       </LinkContainer>
 
